@@ -1,0 +1,57 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "expo CRUD",
+    "title": "expo CRUD",
+    "version": "v1"
+  },
+  "host": "expo.org",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Get",
+        "responses": {
+          "200": {
+            "description": "Success response"
+          }
+        }
+      }
+    }
+  },
+  "definitions":
+  {
+    "Event":
+    {
+      "type":"object",
+      "properties":
+      {
+        "id" :
+        {
+          "type":"integer",
+          "format":"int64"
+        },
+        "name" :
+        {
+          "type":"string"
+        },
+        "desc" :
+        {
+          "type":"string"
+        },
+        "Place" :
+        {
+          "type":"string"
+        },
+        "Date" :
+        {
+          "type":"string",
+          "format":"date-time"
+        }
+      }
+    }
+  }
+}
