@@ -25,6 +25,9 @@ http://localhost:8080/swagger-ui.html
 ## Docker build
 (optional: you can docker-build a a maven-goal too (with a maven plug-in inserted in your pom.xml))
 ```sh
-sudo docker build .
-sudo docker run -p 8080:8080 76f0e2cf29a3
+sudo bash # console as root
+docker build -t crud_image .
+docker run -d -p 9090:8080 --name crud_container crud_image
+docker ps
 ```
+<img src="_res/docker.run.png" width="650px">
