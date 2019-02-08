@@ -10,10 +10,12 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 ### installed through web: sts
 
 ## Java Development: with STS - Spring Tool Suite 4
-<img src="_res/sts.png" width="550px">
+<img src="_res/sts.png" width="650px">
 
 ## Swagger
 ### Editor (JSON or YAML)
-<img src="_res/swagger.editor.png" width="550px">
+<img src="_res/swagger.editor.png" width="650px">
+<img src="_res/swagger.editor.2.png" width="650px">
 ### Browser - showing the REST API of the App
-<img src="_res/swagger.api.png" width="550px">
+http://localhost:8080/swagger-ui.html
+<img src="_res/swagger.api.png" width="650px">

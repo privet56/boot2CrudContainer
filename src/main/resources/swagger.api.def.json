@@ -1,22 +1,131 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "expo CRUD",
-    "title": "expo CRUD",
+    "description": "REST CRUD Interface",
+    "title": "REST CRUD Interface",
     "version": "v1"
   },
-  "host": "expo.org",
+  "host": "crud.org",
   "schemes": [
     "http"
   ],
   "basePath": "/",
   "paths": {
-    "/": {
+    "/api/event": {
       "get": {
-        "summary": "Get",
+        "summary": "List Events",
         "responses": {
           "200": {
-            "description": "Success response"
+            "description": "Success response",
+            "schema": {
+              "type":"array",
+              "items": {
+                "$ref": "#/definitions/Event"
+              }
+            }
+          }
+        }
+      },
+      "post":{
+        "summary": "Creates an Event",
+        "consumes":[ "application/x-www-form-urlencoded" ],
+        "produces":[ "application/json" ],
+        "operationId":"newEvent",
+        "parameters":[{
+          "in":"body",
+          "name":"newEvent",
+          "required":true,
+          "schema": {
+            "$ref": "#/definitions/Event"
+          }
+        }],
+        "responses": {
+          "200":{
+            "description":"created",
+            "schema": {
+              "type": "integer",
+              "format":"in64"
+            }
+          },
+          "400":{
+            "description":"invalid event"
+          }
+        }
+      }
+    },
+    "/api/event/{id}": {
+      "get": {
+        "summary": "Get Events By Id",
+        "parameters": [{
+          "name":"id",
+          "in":"path",
+          "required":true,
+          "type":"integer",
+          "format":"in64"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary": "Updates an Event",
+        "consumes":[ "application/x-www-form-urlencoded" ],
+        "produces":[ "application/json" ],
+        "operationId":"editEvent",
+        "parameters":[{
+          "name":"id",
+          "in":"path",
+          "required":true,
+          "type":"integer",
+          "format":"in64"
+          },
+          {
+          "in":"body",
+          "name":"event",
+          "required":true,
+          "schema": {
+            "$ref": "#/definitions/Event"
+          }
+        }],
+        "responses": {
+          "200":{
+            "description":"updated",
+            "schema": {
+              "type": "boolean",
+              "default":false
+            }
+          },
+          "400":{
+            "description":"invalid event"
+          }
+        }
+      },
+      "delete" : {
+        "summary": "Deletes an Event",
+        "produces":[ "application/json" ],
+        "operationId":"delEvent",
+        "parameters":[{
+          "name":"id",
+          "in":"path",
+          "required":true,
+          "type":"integer",
+          "format":"in64"
+        }],
+        "responses": {
+          "200":{
+            "description":"deleted",
+            "schema": {
+              "type": "boolean",
+              "default":false
+            }
+          },
+          "400":{
+            "description":"invalid event id"
           }
         }
       }
@@ -34,11 +143,11 @@
           "type":"integer",
           "format":"int64"
         },
-        "name" :
+        "Name" :
         {
           "type":"string"
         },
-        "desc" :
+        "Desc" :
         {
           "type":"string"
         },

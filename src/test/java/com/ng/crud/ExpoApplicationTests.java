@@ -1,4 +1,4 @@
-package com.ng.expo;
+package com.ng.crud;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
