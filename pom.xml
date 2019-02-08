@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ng</groupId>
-	<artifactId>expo</artifactId>
+	<artifactId>boot2crud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>expo</name>
-	<description>expo crud</description>
+	<name>boot2crud</name>
+	<description>boot2crud</description>
 
 	<properties>
 		<java.version>1.8</java.version>
