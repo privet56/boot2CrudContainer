@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: boot2crud-service
+  labels:
+    app: boot2crud-service
+spec:
+  ports:
+  - port: 8182
+    targetPort: 8080
+  type: NodePort
+  selector:
+    app: boot2crud-pod
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: boot2crud-replica
+  labels:
+    app: boot2crud-replica
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: boot2crud-pod
+    spec:
+      containers:
+      - name: boot2crud-container
+        image: localhost:5000/boot2crud_image:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

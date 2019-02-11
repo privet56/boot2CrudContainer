@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+    name: boot2crud-deployment
+spec:
+    selector:
+        matchLabels:
+            app: boot2crud-deployment
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                app: boot2crud-deployment
+        spec:
+            containers:
+            - name: boot2crud-container
+              image: localhost:5000/boot2crud_image:latest
+              imagePullPolicy: IfNotPresent
+              ports:
+              - containerPort: 8080
