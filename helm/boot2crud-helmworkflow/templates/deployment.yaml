@@ -29,7 +29,7 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /swagger-ui.html
+              path: /swagger-ui.html?livenessProbe
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 3
@@ -37,10 +37,14 @@ spec:
             timeoutSeconds: 2
           readinessProbe:
             httpGet:
-              path: /swagger-ui.html
+              path: /swagger-ui.html?readinessProbe
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

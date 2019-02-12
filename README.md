@@ -99,7 +99,26 @@ helm delete <deployment-name>
 #### Helm installed chart:
 <img src="_res/helm.installed.pod.png" width="650px">
 
+#### TODO: solve 'Liveness probe failed' on local deployment
+
+## Istio
+```sh
+curl -L https://git.io/getLatestIstio | sh -
+kubectl apply -f install/kubernetes/istio-demo-auth.yaml
+kubectl get svc -n istio-system 	# lists the installed istio components
+kubectl get pods -n istio-system	# wait until pods are started (takes several minutes!)
+
+kubectl get po -n istio-system
+kubectl port-forward grafana-59b8896965-cb5v2 -n istio-system 3000
+
+#uninstall:
+kubectl delete -f install/kubernetes/istio-demo-auth.yaml
+
+```
+1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
+
+
 ## TODO:
 1. helm - local with liveness & readiness probe
-2. istio - local
+2. istio - local - wip
 3. functional/reactive java CRUD implementation
