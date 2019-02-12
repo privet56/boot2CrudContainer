@@ -15,6 +15,7 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 
 ## Swagger
 ### Editor (JSON or YAML)
+[swagger.api.def.json](./src/main/resources/swagger.api.def.json)
 <img src="_res/swagger.editor.png" width="650px">
 <img src="_res/swagger.editor.2.png" width="650px">
 
@@ -50,10 +51,19 @@ docker push localhost:5000/boot2crud_image
 grep -c ^processor /proc/cpuinfo	# returns numCPU
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
-sudo cp minikube /usr/local/bin
-sudo minikube start --vm-driver=kvm2 --insecure-registry localhost
+cp minikube /usr/local/bin
+minikube start --vm-driver=kvm2 --insecure-registry localhost
+
+minikube dashboard 
 
 # remember to turn off the imagePullPolicy:Always, as otherwise Kubernetes won't use images you built locally.
+
+## expose manually:
+kubectl apply -f ./k8s/deployment.yaml
+kubectl expose deployment boot2crud-deployment --port=8080
+minikube service boot2crud-deployment --url		# better: look minikube dashboard -> Services -> boot2crud-service -> Endpoints
+
+## expose through service definition:
 kubectl apply -f ./k8s/deployment.yaml
 kubectl apply -f ./k8s/service.yaml
 minikube service boot2crud-service --url # open the returned URL in the browser to see your app!
@@ -61,3 +71,10 @@ kubectl delete -f ./k8s/service.yaml
 # kubectl delete deployment boot2crud-deployment
 # kubectl expose deployment boot2crud-deployment --type=NodePort --port 8080 --target-port 9091
 ```
+### Minikube Dashboard listing exposed deployment endpoint
+<img src="_res/k8s.with.minikube.png" width="650px">
+
+## TODO:
+1. helm - local
+2. istio - local
+3. functional/reactive java CRUD implementatoin

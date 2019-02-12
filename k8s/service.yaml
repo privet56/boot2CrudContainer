@@ -19,7 +19,7 @@ metadata:
   labels:
     app: boot2crud-replica
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
