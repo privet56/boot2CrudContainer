@@ -15,7 +15,9 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 
 ## Swagger
 ### Editor (JSON or YAML)
+
 [swagger.api.def.json](./src/main/resources/swagger.api.def.json)
+
 <img src="_res/swagger.editor.png" width="650px">
 <img src="_res/swagger.editor.2.png" width="650px">
 
@@ -83,19 +85,21 @@ chmod 700 get_helm.sh
 helm init	# = sets up helm (happens here nothing project-specific, just machine specific setup in $HOME/.helm)
 apt install socat
 kubectl get pods --namespace kube-system	# now, tiller(=helm-server-side) will be listed
+```
+### usage
+```sh
 cd helm
 helm create boot2crud-helmworkflow
 # edit placeholder values manually in the created yaml files...
 helm install boot2crud-helmworkflow/
 # outputs also the created deployment name
 helm delete <deployment-name>
-
 ```
+
 #### Helm installed chart:
 <img src="_res/helm.installed.pod.png" width="650px">
 
-
 ## TODO:
-1. helm - local with liveness & rediness probe
+1. helm - local with liveness & readiness probe
 2. istio - local
-3. functional/reactive java CRUD implementatoin
+3. functional/reactive java CRUD implementation
