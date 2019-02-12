@@ -38,7 +38,7 @@ docker ps -a						# lists killed containers too...
 ## k8s - local
 In a VM, pre-requisite is numCPU>1
 ```sh
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker run -d -p 5000:5000 --restart=always --name registry registry:2	# alternative: minikube addons enable registry
 docker build -t boot2crud_image .
 docker tag boot2crud_image localhost:5000/boot2crud_image
 docker push localhost:5000/boot2crud_image
@@ -81,10 +81,21 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.s
 chmod 700 get_helm.sh
 ./get_helm.sh
 helm init	# = sets up helm (happens here nothing project-specific, just machine specific setup in $HOME/.helm)
+apt install socat
+kubectl get pods --namespace kube-system	# now, tiller(=helm-server-side) will be listed
+cd helm
+helm create boot2crud-helmworkflow
+# edit placeholder values manually in the created yaml files...
+helm install boot2crud-helmworkflow/
+# outputs also the created deployment name
+helm delete <deployment-name>
+
 ```
+#### Helm installed chart:
+<img src="_res/helm.installed.pod.png" width="650px">
 
 
 ## TODO:
-1. helm - local
+1. helm - local with liveness & rediness probe
 2. istio - local
 3. functional/reactive java CRUD implementatoin
