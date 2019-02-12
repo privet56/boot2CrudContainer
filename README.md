@@ -58,21 +58,31 @@ minikube dashboard
 
 # remember to turn off the imagePullPolicy:Always, as otherwise Kubernetes won't use images you built locally.
 
-## expose manually:
+## expose deployment manually:
 kubectl apply -f ./k8s/deployment.yaml
 kubectl expose deployment boot2crud-deployment --port=8080
 minikube service boot2crud-deployment --url		# better: look minikube dashboard -> Services -> boot2crud-service -> Endpoints
 
 ## expose through service definition:
-kubectl apply -f ./k8s/deployment.yaml
 kubectl apply -f ./k8s/service.yaml
-minikube service boot2crud-service --url # open the returned URL in the browser to see your app!
+minikube service boot2crud-deployment --url		# better: look minikube dashboard -> Services -> boot2crud-service -> Endpoints
+
+## cleanup
 kubectl delete -f ./k8s/service.yaml
-# kubectl delete deployment boot2crud-deployment
-# kubectl expose deployment boot2crud-deployment --type=NodePort --port 8080 --target-port 9091
+kubectl delete deployment boot2crud-deployment
 ```
-### Minikube Dashboard listing exposed deployment endpoint
+### Local Minikube Dashboard listing exposed Deployment Endpoint:
 <img src="_res/k8s.with.minikube.png" width="650px">
+
+## Helm
+### Install on Ubuntu
+```sh
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+helm init	# = sets up helm (happens here nothing project-specific, just machine specific setup in $HOME/.helm)
+```
+
 
 ## TODO:
 1. helm - local
