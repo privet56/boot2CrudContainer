@@ -2,13 +2,13 @@
 Spring Boot App with REST WebServices in Docker Container with Kubernetes and Helm
 
 ## Setup on Ubuntu
-### Install through ui: krusader, kate, konsole, docker, minikube
+### Install through UI: krusader, kate, konsole, docker, minikube
+### Install through web: STS - Spring Tool Suite 4
 ### Install through cmd: jdk, curl, git, dockerd(docker.io)
 	$ sudo apt install default-jdk
 	$ sudo apt install curl
 	$ sudo apt install git
 	$ sudo apt install docker.io
-### Install through web: STS - Spring Tool Suite 4
 
 ## Java Development: with STS - Spring Tool Suite 4
 <img src="_res/sts.png" width="650px">
@@ -16,7 +16,7 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 ## Swagger
 ### Editor (JSON or YAML)
 
-[swagger.api.def.json](./src/main/resources/swagger.api.def.json)
+[./src/main/resources/swagger.api.def.json](./src/main/resources/swagger.api.def.json)
 
 <img src="_res/swagger.editor.png" width="650px">
 <img src="_res/swagger.editor.2.png" width="650px">
@@ -37,7 +37,7 @@ docker ps -a						# lists killed containers too...
 ```
 <img src="_res/docker.run.png" width="650px">
 
-## k8s - local
+## k8s - local Setup
 In a VM, pre-requisite is numCPU>1
 ```sh
 docker run -d -p 5000:5000 --restart=always --name registry registry:2	# alternative: minikube addons enable registry
@@ -86,13 +86,13 @@ helm init	# = sets up helm (happens here nothing project-specific, just machine 
 apt install socat
 kubectl get pods --namespace kube-system	# now, tiller(=helm-server-side) will be listed
 ```
-### usage
+### Usage
 ```sh
 cd helm
 helm create boot2crud-helmworkflow
 # edit placeholder values manually in the created yaml files...
-helm install boot2crud-helmworkflow/
-# outputs also the created deployment name
+helm install boot2crud-helmworkflow/ 		# outputs also the created deployment name
+# cleanup:
 helm delete <deployment-name>
 ```
 
