@@ -1,5 +1,5 @@
 # boot2CrudContainer
-Spring Boot App with REST WebServices in Docker Container with Kubernetes and Helm
+Spring Boot App with REST WebServices in Docker Container with Kubernetes and Helm & Istio
 
 ## Setup on Ubuntu
 ### Install through UI: krusader, kate, konsole, docker, minikube
@@ -87,6 +87,8 @@ apt install socat
 kubectl get pods --namespace kube-system	# now, tiller(=helm-server-side) will be listed
 ```
 ### Usage
+helm placeholder configuration:
+[./helm/boot2crud-helmworkflow/values.yaml](./helm/boot2crud-helmworkflow/values.yaml)
 ```sh
 cd helm
 helm create boot2crud-helmworkflow

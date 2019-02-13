@@ -43,8 +43,7 @@
           "200":{
             "description":"created",
             "schema": {
-              "type": "integer",
-              "format":"in64"
+              "type": "string" # the ID of the created Event entity
             }
           },
           "400":{
@@ -61,7 +60,7 @@
           "in":"path",
           "required":true,
           "type":"integer",
-          "format":"in64"
+          "format":"int64"
         }],
         "responses": {
           "200": {
@@ -81,8 +80,7 @@
           "name":"id",
           "in":"path",
           "required":true,
-          "type":"integer",
-          "format":"in64"
+          "type":"string"
           },
           {
           "in":"body",
@@ -113,8 +111,7 @@
           "name":"id",
           "in":"path",
           "required":true,
-          "type":"integer",
-          "format":"in64"
+          "type":"string"
         }],
         "responses": {
           "200":{
@@ -140,25 +137,61 @@
       {
         "id" :
         {
-          "type":"integer",
+          "type":"string"
+        },
+        "title" :
+        {
+          "type":"string"
+        },
+        "startDate" :
+        {
+          "type":"integer", # unix timestamp in milliseconds
           "format":"int64"
         },
-        "Name" :
+        "endDate" :
+        {
+          "type":"integer", # unix timestamp in milliseconds
+          "format":"int64"
+        },
+        "type" : # alternative: enum (in this case it would not be user-extendable)
         {
           "type":"string"
         },
-        "Desc" :
+        "location" : # note: in future an extra model structure
         {
           "type":"string"
         },
-        "Place" :
+        "description" :
         {
           "type":"string"
         },
-        "Date" :
+        "participants" : # list of external contact IDs
         {
-          "type":"string",
-          "format":"date-time"
+          "type":"array",
+          "items": {
+            "type":"integer",
+            "format":"int64"
+          }
+        },
+        "createdBy" : # external user ID
+        {
+            "type":"integer",
+            "format":"int64"
+        },
+        "lastUpdatedBy" : # external user ID
+        {
+            "type":"integer",
+            "format":"int64"
+        },
+        "createdAt" : # unix timestamp in milliseconds
+        {
+            "type":"integer",
+            "format":"int64"
+        },
+        "lastUpdatedAt" : # unix timestamp in milliseconds
+        {
+            "type":"integer",
+            "format":"int64"
         }
       }
     }

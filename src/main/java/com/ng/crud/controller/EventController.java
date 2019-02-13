@@ -48,7 +48,7 @@ public class EventController
     }
 //CREATE
 	@PostMapping()
-	Long newEvent(@RequestBody Event newEvent, HttpServletResponse response)
+	String newEvent(@RequestBody Event newEvent, HttpServletResponse response)
 	{
 		if((newEvent.getId() != null) && !newEvent.getId().equals(0L))
 		{

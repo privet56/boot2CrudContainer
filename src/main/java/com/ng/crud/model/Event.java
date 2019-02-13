@@ -1,37 +1,58 @@
 package com.ng.crud.model;
+
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Event
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-02-08T15:10:35.680Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-02-13T16:09:38.079Z")
 
 public class Event   {
   @JsonProperty("id")
-  private Long id = null;
+  private String id = null;
 
-  @JsonProperty("Name")
-  private String name = null;
+  @JsonProperty("title")
+  private String title = null;
 
-  @JsonProperty("Desc")
-  private String desc = null;
+  @JsonProperty("startDate")
+  private Long startDate = null;
 
-  @JsonProperty("Place")
-  private String place = null;
+  @JsonProperty("endDate")
+  private Long endDate = null;
 
-  @JsonProperty("Date")
-  private OffsetDateTime date = null;
+  @JsonProperty("type")
+  private String type = null;
 
-  public Event id(Long id) {
+  @JsonProperty("location")
+  private String location = null;
+
+  @JsonProperty("description")
+  private String description = null;
+
+  @JsonProperty("participants")
+  @Valid
+  private List<Long> participants = null;
+
+  @JsonProperty("createdBy")
+  private Long createdBy = null;
+
+  @JsonProperty("lastUpdatedBy")
+  private Long lastUpdatedBy = null;
+
+  @JsonProperty("createdAt")
+  private Long createdAt = null;
+
+  @JsonProperty("lastUpdatedAt")
+  private Long lastUpdatedAt = null;
+
+  public Event id(String id) {
     this.id = id;
     return this;
   }
@@ -43,93 +64,240 @@ public class Event   {
   @ApiModelProperty(value = "")
 
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
-  public Event name(String name) {
-    this.name = name;
+  public Event title(String title) {
+    this.title = title;
     return this;
   }
 
   /**
-   * Get name
-   * @return name
+   * Get title
+   * @return title
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
-  public Event desc(String desc) {
-    this.desc = desc;
+  public Event startDate(Long startDate) {
+    this.startDate = startDate;
     return this;
   }
 
   /**
-   * Get desc
-   * @return desc
+   * Get startDate
+   * @return startDate
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getDesc() {
-    return desc;
+  public Long getStartDate() {
+    return startDate;
   }
 
-  public void setDesc(String desc) {
-    this.desc = desc;
+  public void setStartDate(Long startDate) {
+    this.startDate = startDate;
   }
 
-  public Event place(String place) {
-    this.place = place;
+  public Event endDate(Long endDate) {
+    this.endDate = endDate;
     return this;
   }
 
   /**
-   * Get place
-   * @return place
+   * Get endDate
+   * @return endDate
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getPlace() {
-    return place;
+  public Long getEndDate() {
+    return endDate;
   }
 
-  public void setPlace(String place) {
-    this.place = place;
+  public void setEndDate(Long endDate) {
+    this.endDate = endDate;
   }
 
-  public Event date(OffsetDateTime date) {
-    this.date = date;
+  public Event type(String type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get date
-   * @return date
+   * Get type
+   * @return type
   **/
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public OffsetDateTime getDate() {
-    return date;
+  public String getType() {
+    return type;
   }
 
-  public void setDate(OffsetDateTime date) {
-    this.date = date;
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public Event location(String location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public Event description(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Get description
+   * @return description
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Event participants(List<Long> participants) {
+    this.participants = participants;
+    return this;
+  }
+
+  public Event addParticipantsItem(Long participantsItem) {
+    if (this.participants == null) {
+      this.participants = new ArrayList<Long>();
+    }
+    this.participants.add(participantsItem);
+    return this;
+  }
+
+  /**
+   * Get participants
+   * @return participants
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<Long> getParticipants() {
+    return participants;
+  }
+
+  public void setParticipants(List<Long> participants) {
+    this.participants = participants;
+  }
+
+  public Event createdBy(Long createdBy) {
+    this.createdBy = createdBy;
+    return this;
+  }
+
+  /**
+   * Get createdBy
+   * @return createdBy
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(Long createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public Event lastUpdatedBy(Long lastUpdatedBy) {
+    this.lastUpdatedBy = lastUpdatedBy;
+    return this;
+  }
+
+  /**
+   * Get lastUpdatedBy
+   * @return lastUpdatedBy
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getLastUpdatedBy() {
+    return lastUpdatedBy;
+  }
+
+  public void setLastUpdatedBy(Long lastUpdatedBy) {
+    this.lastUpdatedBy = lastUpdatedBy;
+  }
+
+  public Event createdAt(Long createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * Get createdAt
+   * @return createdAt
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Long createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Event lastUpdatedAt(Long lastUpdatedAt) {
+    this.lastUpdatedAt = lastUpdatedAt;
+    return this;
+  }
+
+  /**
+   * Get lastUpdatedAt
+   * @return lastUpdatedAt
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getLastUpdatedAt() {
+    return lastUpdatedAt;
+  }
+
+  public void setLastUpdatedAt(Long lastUpdatedAt) {
+    this.lastUpdatedAt = lastUpdatedAt;
   }
 
 
@@ -143,15 +311,22 @@ public class Event   {
     }
     Event event = (Event) o;
     return Objects.equals(this.id, event.id) &&
-        Objects.equals(this.name, event.name) &&
-        Objects.equals(this.desc, event.desc) &&
-        Objects.equals(this.place, event.place) &&
-        Objects.equals(this.date, event.date);
+        Objects.equals(this.title, event.title) &&
+        Objects.equals(this.startDate, event.startDate) &&
+        Objects.equals(this.endDate, event.endDate) &&
+        Objects.equals(this.type, event.type) &&
+        Objects.equals(this.location, event.location) &&
+        Objects.equals(this.description, event.description) &&
+        Objects.equals(this.participants, event.participants) &&
+        Objects.equals(this.createdBy, event.createdBy) &&
+        Objects.equals(this.lastUpdatedBy, event.lastUpdatedBy) &&
+        Objects.equals(this.createdAt, event.createdAt) &&
+        Objects.equals(this.lastUpdatedAt, event.lastUpdatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, desc, place, date);
+    return Objects.hash(id, title, startDate, endDate, type, location, description, participants, createdBy, lastUpdatedBy, createdAt, lastUpdatedAt);
   }
 
   @Override
@@ -160,10 +335,17 @@ public class Event   {
     sb.append("class Event {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    desc: ").append(toIndentedString(desc)).append("\n");
-    sb.append("    place: ").append(toIndentedString(place)).append("\n");
-    sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
+    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    participants: ").append(toIndentedString(participants)).append("\n");
+    sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
+    sb.append("    lastUpdatedBy: ").append(toIndentedString(lastUpdatedBy)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    lastUpdatedAt: ").append(toIndentedString(lastUpdatedAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
