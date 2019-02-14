@@ -30,6 +30,13 @@ http://localhost:8080/swagger-ui.html
 
 ## Docker build & run
 (optional: you can docker-build through a maven-goal too (with a maven plug-in inserted in your pom.xml))
+
+Docker resources:
+
+1. [./Dockerfile](./Dockerfile)
+
+.
+
 ```sh
 sudo bash 							# console as root
 docker build -t boot2crud_image .
@@ -76,6 +83,11 @@ minikube service boot2crud-deployment --url		# better: look minikube dashboard -
 kubectl delete -f ./k8s/service.yaml
 kubectl delete deployment boot2crud-deployment
 ```
+Deployment- & Service defintions:
+
+1. [./k8s/deplyoment.yaml](./k8s/deplyoment.yaml)
+2. [./k8s/service.yaml](./k8s/service.yaml)
+
 ### Local Minikube Dashboard listing exposed Deployment Endpoint:
 <img src="_res/k8s.with.minikube.png" width="650px">
 
@@ -140,9 +152,11 @@ kubectl get namespace -L istio-injection
 kubectl delete -f install/kubernetes/istio-demo-auth.yaml
 helm delete --purge istio									# if installed with helm
 ```
-
+### Istio-provided Dashboards & Graphs
 1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
 2. in Grafana (eg. http://172.17.0.13:3000/datasources/edit/1 ), edit Prometheus URL, set it to http://172.17.0.16:9090/
+3. zipkin
+4. jaeger
 
 ### Grafana setting for Prometheus: 
 
@@ -155,6 +169,11 @@ helm delete --purge istio									# if installed with helm
 #### Prometheus graphing the boot2crud app:
 
 <img src="_res/istio.prometheus.png" width="650px">
+
+#### Jaeger tracing the boot2crud app:
+
+<img src="_res/istio.jaegerui.png" width="650px">
+<img src="_res/istio.jaegerui.2.png" width="650px">
 
 ### Istio troubleshooting
 ```sh
