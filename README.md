@@ -137,8 +137,9 @@ curl -L https://git.io/getLatestIstio | sh -
 # kubectl apply -f install/kubernetes/istio-demo-auth.yaml			# without helm
 # better with helm (here allowing local(minikube) egress traffic!):
 helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set tracing.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.yaml
+# ^this is on minikube, on the cloud set differently IP range!, see: https://istio.io/docs/tasks/traffic-management/egress/#calling-external-services-directly
 kubectl create namespace istio-system
-kubectl apply -f ./istio.yaml
+kubectl apply -f ./istio4boot2crud.yaml
 kubectl label namespace default istio-injection=enabled
 
 kubectl get svc -n istio-system 	# lists the installed istio components
@@ -151,8 +152,9 @@ kubectl port-forward grafana-59b8896965-5892z -n istio-system 3000
 kubectl label namespace default istio-injection=enabled
 kubectl get namespace -L istio-injection
 
-#uninstall istio:
-kubectl delete -f install/kubernetes/istio-demo-auth.yaml
+## uninstall istio:
+#kubectl delete -f install/kubernetes/istio-demo-auth.yaml
+#kubectl delete -f istio4boot2crud.yaml						# ...or with the helm-generated yaml!
 helm delete --purge istio									# if installed with helm
 ```
 
