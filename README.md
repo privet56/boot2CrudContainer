@@ -85,7 +85,7 @@ kubectl delete deployment boot2crud-deployment
 ```
 Deployment- & Service defintions:
 
-1. [./k8s/deplyoment.yaml](./k8s/deplyoment.yaml)
+1. [./k8s/deplyoment.yaml](./k8s/deployment.yaml)
 2. [./k8s/service.yaml](./k8s/service.yaml)
 
 ### Local Minikube Dashboard listing exposed Deployment Endpoint:
@@ -98,7 +98,10 @@ Deployment- & Service defintions:
 		or
 	2. try to
 		1. kubectl edit cm coredns -n kube-system # starts cfg in vi
-		2. delete line 'loop' # vi-edit mode: i # vi-save: [ESC]-:w # vi-quit: [ESC]-:q!
+		2. delete line 'loop'
+			1. vi-edit mode: i
+			2. vi-save: [ESC]-:w
+			3. vi-quit: [ESC]-:q!
 		3. restart pods
 
 ## Helm
@@ -112,8 +115,8 @@ apt install socat
 kubectl get pods --namespace kube-system	# now, tiller(=helm-server-side) will be listed
 ```
 ### Usage
-helm placeholder configuration:
-[./helm/boot2crud-helmworkflow/values.yaml](./helm/boot2crud-helmworkflow/values.yaml)
+helm chart (placeholder configuration):
+[./helm/boot2crud-helmworkflow/](./helm/boot2crud-helmworkflow/)
 ```sh
 cd helm
 helm create boot2crud-helmworkflow
@@ -152,6 +155,10 @@ kubectl get namespace -L istio-injection
 kubectl delete -f install/kubernetes/istio-demo-auth.yaml
 helm delete --purge istio									# if installed with helm
 ```
+
+#### helm-generated istio-setup yaml:
+[./k8s/istio4boot2crud.yaml](./k8s/istio4boot2crud.yaml)
+
 ### Istio-provided Dashboards & Graphs
 1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
 2. in Grafana (eg. http://172.17.0.13:3000/datasources/edit/1 ), edit Prometheus URL, set it to http://172.17.0.16:9090/
