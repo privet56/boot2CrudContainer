@@ -9,6 +9,7 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 	$ sudo apt install curl
 	$ sudo apt install git
 	$ sudo apt install docker.io
+### on VMWare, install VMWare Tools as sudo vmware-install.pl
 
 ## Java Development: with STS - Spring Tool Suite 4
 <img src="_res/sts.png" width="650px">
@@ -76,6 +77,16 @@ kubectl delete deployment boot2crud-deployment
 ### Local Minikube Dashboard listing exposed Deployment Endpoint:
 <img src="_res/k8s.with.minikube.png" width="650px">
 
+### Gotchas
+1. if the pod CoreDNS is in CrashLoopBackOff
+	1. try to change the nameserver entry in /etc/resolv.conf & restart:
+		kubectl -n kube-system delete pod -l k8s-app=kube-dns
+		or
+	2. try to
+		1. kubectl edit cm coredns -n kube-system # starts cfg in vi
+		2. delete line 'loop' # vi-edit mode: i # vi-save: [ESC]-:w # vi-quit: [ESC]-:q!
+		3. restart pods
+
 ## Helm
 ### Install on Ubuntu
 ```sh
@@ -111,14 +122,32 @@ kubectl get svc -n istio-system 	# lists the installed istio components
 kubectl get pods -n istio-system	# wait until pods are started (takes several minutes!)
 
 kubectl get po -n istio-system
-kubectl port-forward grafana-59b8896965-cb5v2 -n istio-system 3000
+kubectl port-forward grafana-59b8896965-lxgmx -n istio-system 3000
+
+## enable auto-sidecar injection into new pods:
+kubectl label namespace default istio-injection=enabled
+kubectl get namespace -L istio-injection
 
 #uninstall:
 kubectl delete -f install/kubernetes/istio-demo-auth.yaml
-
 ```
-1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
 
+1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
+2. in Grafana (eg. http://172.17.0.13:3000/datasources/edit/1 ), edit Prometheus URL, set it to http://172.17.0.16:9090/
+
+<img src="_res/grafana.set.prometheus.url.png" width="650px">
+
+### Istio troubleshooting
+```sh
+# see if sidecar-injector set up correctly:
+kubectl proxy & curl -s localhost:8001/metrics | grep sidecar-injector
+## check istio endpoints on
+http://127.0.0.1:8001/
+
+## if injector not working, try to recreate...
+kubectl get pods -n istio-system
+kubectl delete pod istio-sidecar-injector-768c79f7bf-92b76 -n istio-system
+```
 
 ## TODO:
 1. helm - local with liveness & readiness probe
