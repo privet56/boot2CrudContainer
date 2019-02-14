@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ng.crud.model.Event;
+import com.ng.crud.repo.EventRepo;
 
 @RestController
 @RequestMapping(value = "/api/event")
 public class EventController
 {
+	@Autowired
+	private EventRepo eventRepo;
+
 	private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 //GET - ALL
 	@RequestMapping(method = RequestMethod.GET)
@@ -31,6 +35,8 @@ public class EventController
 	{
 		List<Event> l = new ArrayList<Event>();
         return l;
+        //TODO: use ResponseEntity, like:
+        //return new ResponseEntity<Article>(article, HttpStatus.OK);
     }
 //GET - ONE
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

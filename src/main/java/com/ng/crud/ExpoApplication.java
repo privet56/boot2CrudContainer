@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan("com.ng.crud.controller")
+@ComponentScan({"com.ng.crud.controller", "com.ng.crud.repo"})
 public class ExpoApplication
 {
 	public static void main(String[] args)

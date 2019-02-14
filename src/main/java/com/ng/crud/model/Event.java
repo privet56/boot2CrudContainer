@@ -1,12 +1,18 @@
 package com.ng.crud.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.Valid;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Event
@@ -14,8 +20,13 @@ import javax.validation.Valid;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-02-13T16:09:38.079Z")
 
-public class Event   {
+//TODO: activate list's!
+
+@Entity
+public class Event
+{
   @JsonProperty("id")
+  @Id
   private String id = null;
 
   @JsonProperty("title")
@@ -35,11 +46,11 @@ public class Event   {
 
   @JsonProperty("description")
   private String description = null;
-
+/*
   @JsonProperty("participants")
   @Valid
   private List<Long> participants = null;
-
+*/
   @JsonProperty("createdBy")
   private Long createdBy = null;
 
@@ -191,7 +202,7 @@ public class Event   {
   public void setDescription(String description) {
     this.description = description;
   }
-
+/*
   public Event participants(List<Long> participants) {
     this.participants = participants;
     return this;
@@ -204,11 +215,12 @@ public class Event   {
     this.participants.add(participantsItem);
     return this;
   }
-
+*/
+/*
   /**
    * Get participants
    * @return participants
-  **/
+  * * /
   @ApiModelProperty(value = "")
 
 
@@ -219,7 +231,7 @@ public class Event   {
   public void setParticipants(List<Long> participants) {
     this.participants = participants;
   }
-
+*/
   public Event createdBy(Long createdBy) {
     this.createdBy = createdBy;
     return this;
@@ -317,7 +329,7 @@ public class Event   {
         Objects.equals(this.type, event.type) &&
         Objects.equals(this.location, event.location) &&
         Objects.equals(this.description, event.description) &&
-        Objects.equals(this.participants, event.participants) &&
+//        Objects.equals(this.participants, event.participants) &&
         Objects.equals(this.createdBy, event.createdBy) &&
         Objects.equals(this.lastUpdatedBy, event.lastUpdatedBy) &&
         Objects.equals(this.createdAt, event.createdAt) &&
@@ -326,7 +338,7 @@ public class Event   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, startDate, endDate, type, location, description, participants, createdBy, lastUpdatedBy, createdAt, lastUpdatedAt);
+    return Objects.hash(id, title, startDate, endDate, type, location, description, /*participants,*/ createdBy, lastUpdatedBy, createdAt, lastUpdatedAt);
   }
 
   @Override
@@ -341,7 +353,7 @@ public class Event   {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    participants: ").append(toIndentedString(participants)).append("\n");
+//    sb.append("    participants: ").append(toIndentedString(participants)).append("\n");
     sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
     sb.append("    lastUpdatedBy: ").append(toIndentedString(lastUpdatedBy)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
