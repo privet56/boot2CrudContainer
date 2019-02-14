@@ -144,10 +144,16 @@ helm delete --purge istio									# if installed with helm
 1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
 2. in Grafana (eg. http://172.17.0.13:3000/datasources/edit/1 ), edit Prometheus URL, set it to http://172.17.0.16:9090/
 
+### Grafana setting for Prometheus: 
+
 <img src="_res/grafana.set.prometheus.url.png" width="650px">
+
 #### Grafana Dashboard graphing the boot2crud app:
+
 <img src="_res/istio.grafana.dashboard.png" width="650px">
+
 #### Prometheus graphing the boot2crud app:
+
 <img src="_res/istio.prometheus.png" width="650px">
 
 ### Istio troubleshooting
