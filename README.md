@@ -9,6 +9,8 @@ Spring Boot App with REST WebServices in Docker Container with Kubernetes and He
 	$ sudo apt install curl
 	$ sudo apt install git
 	$ sudo apt install docker.io
+	$ sudo apt install socat
+	$ sudo apt install net-tools
 ### on VMWare, install VMWare Tools as sudo vmware-install.pl
 
 ## Java Development: with STS - Spring Tool Suite 4
@@ -117,39 +119,61 @@ helm delete <deployment-name>
 ## Istio
 ```sh
 curl -L https://git.io/getLatestIstio | sh -
-kubectl apply -f install/kubernetes/istio-demo-auth.yaml
+# kubectl apply -f install/kubernetes/istio-demo-auth.yaml			# without helm
+# better with helm (here allowing local(minikube) egress traffic!):
+helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set tracing.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.yaml
+kubectl create namespace istio-system
+kubectl apply -f ./istio.yaml
+kubectl label namespace default istio-injection=enabled
+
 kubectl get svc -n istio-system 	# lists the installed istio components
 kubectl get pods -n istio-system	# wait until pods are started (takes several minutes!)
 
 kubectl get po -n istio-system
-kubectl port-forward grafana-59b8896965-lxgmx -n istio-system 3000
+kubectl port-forward grafana-59b8896965-5892z -n istio-system 3000
 
 ## enable auto-sidecar injection into new pods:
 kubectl label namespace default istio-injection=enabled
 kubectl get namespace -L istio-injection
 
-#uninstall:
+#uninstall istio:
 kubectl delete -f install/kubernetes/istio-demo-auth.yaml
+helm delete --purge istio									# if installed with helm
 ```
 
 1. Prometheus URL: see k8s dashboard, eg. http://172.17.0.16:9090/graph
 2. in Grafana (eg. http://172.17.0.13:3000/datasources/edit/1 ), edit Prometheus URL, set it to http://172.17.0.16:9090/
 
 <img src="_res/grafana.set.prometheus.url.png" width="650px">
+#### Grafana Dashboard graphing the boot2crud app:
+<img src="_res/istio.grafana.dashboard.png" width="650px">
+#### Prometheus graphing the boot2crud app:
+<img src="_res/istio.prometheus.png" width="650px">
 
 ### Istio troubleshooting
 ```sh
 # see if sidecar-injector set up correctly:
-kubectl proxy & curl -s localhost:8001/metrics | grep sidecar-injector
+kubectl proxy & curl -s localhost:7771/metrics | grep sidecar-injector
+...don't forget to kill it later:
+netstat -tulp | grep kubectl
+kill -9 <pid>
 ## check istio endpoints on
 http://127.0.0.1:8001/
 
 ## if injector not working, try to recreate...
 kubectl get pods -n istio-system
 kubectl delete pod istio-sidecar-injector-768c79f7bf-92b76 -n istio-system
+
+## get local running pod in local browser:
+kubectl get pods
+kubectl port-forward donating-marsupial-boot2crud-helmworkflow-658bcf8b9d-2lfbg 6080:8080
+
+## allow egress(=outgoing) traffic:
+kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges="10.0.0.1/24" -x templates/sidecar-injector-configmap.yaml
+# ^this is on minikube, on the cloud set differently IP range!, see: https://istio.io/docs/tasks/traffic-management/egress/#calling-external-services-directly
+
 ```
 
 ## TODO:
 1. helm - local with liveness & readiness probe
-2. istio - local - wip
-3. functional/reactive java CRUD implementation
+2. functional/reactive java CRUD implementation
