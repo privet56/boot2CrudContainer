@@ -207,5 +207,5 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 ```
 
 ## TODO:
-1. helm - local with liveness & readiness probe
+1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
 2. functional/reactive java CRUD implementation
