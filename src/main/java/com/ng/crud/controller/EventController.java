@@ -1,13 +1,17 @@
 package com.ng.crud.controller;
 
+import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
 import com.ng.crud.model.Event;
 import com.ng.crud.repo.EventRepo;
 
@@ -31,67 +36,67 @@ public class EventController
 	private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 //GET - ALL
 	@RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody List<Event> events()
+    public @ResponseBody ResponseEntity<List<Event>> events()
 	{
-		List<Event> l = new ArrayList<Event>();
-        return l;
-        //TODO: use ResponseEntity, like:
-        //return new ResponseEntity<Article>(article, HttpStatus.OK);
+		ArrayList<Event> l = Lists.newArrayList(eventRepo.findAll());
+        return new ResponseEntity<>(l, HttpStatus.OK);
     }
 //GET - ONE
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //public @ResponseBody Event event(@RequestParam("id") Long id)
-    public @ResponseBody Event event(@PathVariable("id") Long id, HttpServletResponse response)
+    public @ResponseBody ResponseEntity<Event> event(@PathVariable("id") String id, HttpServletResponse response)	//look id in path, not in @RequestParam
 	{
-		if((id == null) || (id.equals(0L)))
+		if((id == null) || (id.isBlank()))
 		{
 			logger.warn("event-get(1) - no/invalid id:"+id);
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return null;
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		Optional<Event> e = eventRepo.findById(id);
+		if(!e.isPresent())
+		{
+			logger.warn("event-get(1) - id-not-found id:"+id);
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 		
-        return new Event();
+        return new ResponseEntity<>(e.get(), HttpStatus.OK);
     }
 //CREATE
 	@PostMapping()
-	String newEvent(@RequestBody Event newEvent, HttpServletResponse response)
+	ResponseEntity<String> newEvent(@RequestBody Event newEvent, HttpServletResponse response)
 	{
-		if((newEvent.getId() != null) && !newEvent.getId().equals(0L))
+		if((newEvent.getId() != null) && !newEvent.getId().isBlank())
 		{
 			logger.warn("event-post - new event should have no id:"+newEvent.getId());
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return null;
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-
-		//return repository.save(newEvent);
-		return newEvent.getId();
+		
+		newEvent.setId(UUID.randomUUID().toString());
+		Event savedEvent = eventRepo.save(newEvent);
+		return new ResponseEntity<>(savedEvent.getId(), HttpStatus.OK);
 	}
 //EDIT
 	@PutMapping(value = "/{id}")
-	boolean editEvent(@RequestBody Event event, HttpServletResponse response)
+	ResponseEntity<Boolean> editEvent(@RequestBody Event event, HttpServletResponse response)
 	{
-		if((event.getId() == null) || event.getId().equals(0L))
+		if((event.getId() == null) || event.getId().isBlank())
 		{
 			logger.warn("event-put - event to be edited, should have id:"+event.getId());
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return false;
+			return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
 		}
 
-		//return repository.save(newEvent);
-		return false;
+		eventRepo.save(event);
+		return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
 	}
 //DEL
 	@DeleteMapping("/{id}")
-	boolean delEvent(@PathVariable("id") Long id, HttpServletResponse response)
+	ResponseEntity<Boolean> delEvent(@PathVariable("id") String id, HttpServletResponse response)
 	{
-		if((id == null) || id.equals(0L))
+		if((id == null) || id.isBlank())
 		{
 			logger.warn("event-del - event to be deleted, should have id:"+id);
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return false;
+			return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
 		}
 
-		//return repository.save(newEvent);
-		return false;
+		eventRepo.deleteById(id);
+		return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
 	}	
 }

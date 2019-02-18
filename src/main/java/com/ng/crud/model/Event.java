@@ -1,12 +1,13 @@
 package com.ng.crud.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.Valid;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -29,9 +30,11 @@ public class Event
   @Id
   private String id = null;
 
+  @NotBlank
   @JsonProperty("title")
   private String title = null;
 
+  @NotNull
   @JsonProperty("startDate")
   private Long startDate = null;
 
@@ -371,5 +374,17 @@ public class Event
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+  
+  @PrePersist
+  public void prePersist() {
+      createdAt = System.currentTimeMillis();
+      //createdBy = LoggedUser.get();	//TODO
+      this.preUpdate();
+  }
+  @PreUpdate
+  public void preUpdate() {
+      lastUpdatedAt = System.currentTimeMillis();
+      //updatedBy = LoggedUser.get();	//TODO
   }
 }

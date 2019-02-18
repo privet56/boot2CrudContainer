@@ -208,6 +208,17 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 
 ```
 
+## CRUD with H2
+#### Test setup with in memory H2 database:
+[./src/main/resources/application-test.properties](./src/main/resources/application-test.properties)
+ (hint: start STS Spring-Boot App with Profile=test)
+#### UI of the H2 console and the CRUD app:
+<img src="_res/crud2h2.png" width="650px">
+
 ## TODO:
 1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
 2. functional/reactive java CRUD implementation
+3. configure swagger code-generation:
+	1. https://github.com/swagger-api/swagger-codegen/wiki/Server-stub-generator-HOWTO#java-springboot
+	2. http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.1/swagger-codegen-cli-2.4.1.jar
+	3. java -jar swagger-codegen-cli.jar generate -i CrudApp_0.0.2.yaml -l spring -o generated/spring-server -c CrudApp_config.json
