@@ -20,15 +20,21 @@
           "type":"integer",
           "required":false
         },{
-          "name":"hitspage",
+          "name":"hitsperpage",
           "in":"query",
           "type":"integer",
           "required":false
         }
         ,{
-          "name":"sort",
+          "name":"sortBy",
           "in":"query",
           "type":"string",
+          "required":false
+        },{
+          "name":"sortDirection",
+          "in":"query",
+          "type":"string",
+          "enum": ["asc", "desc"],
           "required":false
         }],
         "responses": {
@@ -37,7 +43,7 @@
             "schema": {
               "type":"array",
               "items": {
-                "$ref": "#/definitions/Event"
+                "$ref": "#/definitions/Event" # TODO: model pageable!
               }
             }
           }

@@ -1,17 +1,27 @@
 package com.ng.crud.controller;
 
+import org.springframework.data.domain.PageRequest;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,11 +46,28 @@ public class EventController
 
 	private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 //GET - ALL
+	/* without paging
 	@RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<Event>> events()
 	{
 		ArrayList<Event> l = Lists.newArrayList(eventRepo.findAll());
         return new ResponseEntity<>(l, HttpStatus.OK);	//TODO: return page attributes too
+    }
+	*/
+	@RequestMapping(method = RequestMethod.GET)
+    public @ResponseBody Page<Event> events(
+    		@RequestParam(value = "sortBy", required = false) 			String sortBy,
+    		@RequestParam(value = "sortDirection", required = false) 	String sortDirection,
+    		@RequestParam(value = "page", required = false) 			Integer page,
+    		@RequestParam(value = "hitsperpage", required = false) 		Integer hitsperpage)
+	{
+		if(StringUtils.isBlank(sortDirection))sortDirection = "DESC";
+		if(StringUtils.isBlank(sortBy))sortBy = "id";
+		if(page == null)page = 0;
+		if(hitsperpage == null)hitsperpage = 10;
+		
+		Pageable pageable = PageRequest.of(page, hitsperpage, Sort.by("DESC".equalsIgnoreCase(sortDirection) ? Direction.DESC : Direction.ASC, sortBy));
+		return this.eventRepo.findAll(pageable); //page has totalpages & totalelements
     }
 //GET - ONE
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -61,8 +89,16 @@ public class EventController
     }
 //CREATE
 	@PostMapping()
-	ResponseEntity<String> newEvent(@RequestBody Event newEvent, HttpServletResponse response)
+	ResponseEntity<String> newEvent(@Valid @RequestBody Event newEvent, HttpServletResponse response, BindingResult bindingResult) throws ValidationException
 	{
+		if(bindingResult.hasErrors())
+		{
+			logger.warn("event-post - new event should be valid:"+bindingResult.toString()+" << "+(newEvent == null ? "null" : newEvent.toString()));
+			
+			return new ResponseEntity<>(bindingResult.toString(), HttpStatus.BAD_REQUEST);
+			//throw new ValidationException(bindingResult.toString());	= alternative
+	    }
+		
 		if((newEvent.getId() != null) && !newEvent.getId().isBlank())
 		{
 			logger.warn("event-post - new event should have no id:"+newEvent.getId());
@@ -75,8 +111,16 @@ public class EventController
 	}
 //EDIT
 	@PutMapping(value = "/{id}")
-	ResponseEntity<Boolean> editEvent(@RequestBody Event event, HttpServletResponse response)
+	ResponseEntity<Boolean> editEvent(@RequestBody Event event, HttpServletResponse response, BindingResult bindingResult) throws ValidationException
 	{
+		if(bindingResult.hasErrors())
+		{
+			logger.warn("event-put - event should be valid:"+bindingResult.toString()+" << "+(event == null ? "null" : event.toString()));
+			
+			return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
+			//throw new ValidationException(bindingResult.toString());	= alternative
+	    }
+
 		if((event.getId() == null) || event.getId().isBlank())
 		{
 			logger.warn("event-put - event to be edited, should have id:"+event.getId());
