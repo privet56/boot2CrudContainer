@@ -215,6 +215,9 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 #### UI of the H2 console and the CRUD app:
 <img src="_res/crud2h2.png" width="650px">
 
+#### Unit Test for REST Controller:
+<img src="_res/unittest4controller.png" width="650px">
+
 ## TODO:
 1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
 2. functional/reactive java CRUD implementation

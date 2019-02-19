@@ -1,17 +1,18 @@
 package com.ng.crud.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.hamcrest.Matchers.hasSize;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,19 +22,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ng.crud.model.Event;
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest
-//@AutoConfigureMockMvc
-@WebMvcTest(EventController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class EventControllerTest
 {
 	@Autowired
     private MockMvc mvc;
 	
-	public EventControllerTest()
-	{
-
-	}
+	public EventControllerTest() {	}
 
 	@Test
 	public void testCreateGetAll() throws Exception
@@ -53,6 +50,7 @@ public class EventControllerTest
 			      .andExpect(jsonPath("$", hasSize(1)))
 			      .andExpect(jsonPath("$[0].title", is(e.getTitle())));
 		
+		System.out.println("event with title '"+e.getTitle()+"' saved.");
 	}
 
 	private Event getDummyEvent()
@@ -61,6 +59,7 @@ public class EventControllerTest
 		e.setTitle("title");
 		e.setLocation("location");
 		e.setDescription("description");
+		e.setStartDate(3L);
 		return e;
 	}
 
