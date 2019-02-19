@@ -43,7 +43,7 @@
             "schema": {
               "type":"array",
               "items": {
-                "$ref": "#/definitions/Event" # TODO: model pageable!
+                "$ref": "#/definitions/PageableEventList"
               }
             }
           }
@@ -153,6 +153,31 @@
   },
   "definitions":
   {
+  	"PageableEventList" :
+  	{
+      "type":"object",
+      "properties":
+      {
+      	"content":
+      	{
+          "type":"array",
+          "items": {
+            "$ref": "#/definitions/Event"
+          }
+      	},
+      	"totalPages" :
+      	{
+          "type":"integer",
+          "format":"int64"
+      	},
+      	"totalElements" :
+      	{
+          "type":"integer",
+          "format":"int64"
+      	}
+      	# other attrs of org.springframework.data.domain.Page not yet modeled
+  	  }
+  	},
     "Event":
     {
       "type":"object",
