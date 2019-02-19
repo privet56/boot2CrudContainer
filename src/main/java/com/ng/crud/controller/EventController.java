@@ -39,13 +39,13 @@ public class EventController
     public @ResponseBody ResponseEntity<List<Event>> events()
 	{
 		ArrayList<Event> l = Lists.newArrayList(eventRepo.findAll());
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        return new ResponseEntity<>(l, HttpStatus.OK);	//TODO: return page attributes too
     }
 //GET - ONE
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<Event> event(@PathVariable("id") String id, HttpServletResponse response)	//look id in path, not in @RequestParam
 	{
-		if((id == null) || (id.isBlank()))
+		if((id == null) || (id.isBlank()))	//TODO: use apache commons StringUtils isBlank
 		{
 			logger.warn("event-get(1) - no/invalid id:"+id);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
