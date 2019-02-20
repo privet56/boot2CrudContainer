@@ -9,6 +9,7 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +24,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 //TODO: activate list's!
 
-@Entity
+//@Entity - SQL Databases
+@Document
 public class Event
 {
   @JsonProperty("id")

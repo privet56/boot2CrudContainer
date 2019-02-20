@@ -68,7 +68,7 @@ public class EventControllerTest
 		e.setStartDate(3L);
 		return e;
 	}
-
+	
 	public static String asJsonString(final Object obj)
 	{
 	    try

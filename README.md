@@ -218,6 +218,30 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 #### Unit Test for REST Controller:
 <img src="_res/unittest4controller.png" width="650px">
 
+## Mongo Settings
+1. add Spring Boot Starter support for MongoDB (see pic below)
+2. start Docker image with MongoDB: script: [./LaunchDocker4Mongo.sh](./LaunchDocker4Mongo.sh) (see second below pic)
+	1. change directory name /home/ghe/expoappmongodb/ to an existing dir in the script 
+3. Change Entity from SQL- to Document-based DB Annotatations, set base of Repo to MongoRepository 
+4. set .properties entries and specify MongoDB host (=the dockerized image) (we are not using embedded mongo)
+5. setup mongo user:
+```sh
+docker exec -it expoappmongo bash
+mongo -u expoapp -p s3cr3t
+use expodb
+db.createUser({user: 'expoapp',pwd: 's3cr3t',roles: [{ role: 'readWrite', db:'expodb'}]})
+quit()
+```
+5. hints:
+	1. $ sudo apt install mongodb-clients 	# if you would like to use mongo from the cmdline
+	2. $ docker stop expoappmongo 			# shutdown running docker
+
+#### Initialzr setting for MongoDB support:
+<img src="_res/springBootStarterSettings4Mongo.png" width="350px">
+
+#### Launch Dockerized MongoDB image:
+<img src="_res/LaunchDocker4Mongo.png" width="650px">
+
 ## TODO:
 1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
 2. functional/reactive java CRUD implementation
@@ -225,3 +249,5 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 	1. https://github.com/swagger-api/swagger-codegen/wiki/Server-stub-generator-HOWTO#java-springboot
 	2. http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.1/swagger-codegen-cli-2.4.1.jar
 	3. java -jar swagger-codegen-cli.jar generate -i CrudApp_0.0.2.yaml -l spring -o generated/spring-server -c CrudApp_config.json
+4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/annotations
+

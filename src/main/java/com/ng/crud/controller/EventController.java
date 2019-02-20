@@ -71,9 +71,9 @@ public class EventController
     }
 //GET - ONE
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<Event> event(@PathVariable("id") String id, HttpServletResponse response)	//look id in path, not in @RequestParam
+    public @ResponseBody ResponseEntity<Event> event(@PathVariable("id") String id, HttpServletResponse response)
 	{
-		if((id == null) || (id.isBlank()))	//TODO: use apache commons StringUtils isBlank
+		if(StringUtils.isBlank(id))
 		{
 			logger.warn("event-get(1) - no/invalid id:"+id);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -99,7 +99,7 @@ public class EventController
 			//throw new ValidationException(bindingResult.toString());	= alternative
 	    }
 		
-		if((newEvent.getId() != null) && !newEvent.getId().isBlank())
+		if(!StringUtils.isBlank(newEvent.getId()))
 		{
 			logger.warn("event-post - new event should have no id:"+newEvent.getId());
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -121,7 +121,7 @@ public class EventController
 			//throw new ValidationException(bindingResult.toString());	= alternative
 	    }
 
-		if((event.getId() == null) || event.getId().isBlank())
+		if(StringUtils.isBlank(event.getId()))
 		{
 			logger.warn("event-put - event to be edited, should have id:"+event.getId());
 			return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
@@ -134,7 +134,7 @@ public class EventController
 	@DeleteMapping("/{id}")
 	ResponseEntity<Boolean> delEvent(@PathVariable("id") String id, HttpServletResponse response)
 	{
-		if((id == null) || id.isBlank())
+		if(StringUtils.isBlank(id))
 		{
 			logger.warn("event-del - event to be deleted, should have id:"+id);
 			return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
