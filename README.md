@@ -235,6 +235,9 @@ quit()
 5. hints:
 	1. $ sudo apt install mongodb-clients 	# if you would like to use mongo from the cmdline
 	2. $ docker stop expoappmongo 			# shutdown running docker
+	3. slight disadvantage of this setup:
+		1. as the mongodb data is permanent, the unit tests have to be adjusted (as we dont use embedded inmemory mongo)
+		2. the containerized mongodb has to run during unit tests
 
 #### Initialzr setting for MongoDB support:
 <img src="_res/springBootStarterSettings4Mongo.png" width="350px">

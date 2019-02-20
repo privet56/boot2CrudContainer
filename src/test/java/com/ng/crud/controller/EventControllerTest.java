@@ -1,6 +1,7 @@
 package com.ng.crud.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -10,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.GreaterThan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +50,8 @@ public class EventControllerTest
 		/*MvcResult result = */mvc.perform(get("/api/event")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
-			      .andExpect(jsonPath("$[\"content\"]", hasSize(1)))
+			      //.andExpect(jsonPath("$[\"content\"]", hasSize(1)))	//when in-memory (=clean) db
+			      .andExpect(jsonPath("$[\"content\"]", hasSize(greaterThan(0))))
 			      .andExpect(jsonPath("$[\"content\"][0].title", is(e.getTitle())));
 			      //.andReturn();
 		
