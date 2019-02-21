@@ -50,8 +50,8 @@ public class EventControllerTest
 		/*MvcResult result = */mvc.perform(get("/api/event")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
-			      //.andExpect(jsonPath("$[\"content\"]", hasSize(1)))	//when in-memory (=clean) db
-			      .andExpect(jsonPath("$[\"content\"]", hasSize(greaterThan(0))))
+			      .andExpect(jsonPath("$[\"content\"]", hasSize(1)))					//when in-memory (=clean) db
+			      //.andExpect(jsonPath("$[\"content\"]", hasSize(greaterThan(0))))		//when existing (probably already filled) db
 			      .andExpect(jsonPath("$[\"content\"][0].title", is(e.getTitle())));
 			      //.andReturn();
 		

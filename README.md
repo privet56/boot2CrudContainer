@@ -1,5 +1,5 @@
 # boot2CrudContainer
-Spring Boot App with REST WebServices in Docker Container with Kubernetes and Helm & Istio
+Spring Boot App with REST WebServices in Docker Container with MongoDB, Kubernetes and Helm & Istio
 
 ## Setup on Ubuntu
 ### Install through UI: krusader, kate, konsole, docker, minikube
@@ -239,11 +239,16 @@ quit()
 		1. as the mongodb data is permanent, the [unit tests](./src/test/java/com/ng/crud/controller/EventControllerTest.java) have to be adjusted *(as we dont use embedded inmemory mongo)*
 		2. the containerized mongodb has to run during unit tests
 
-#### Initialzr setting for MongoDB support:
+#### Initialzr setting for MongoDB support (here in STS):
 <img src="_res/springBootStarterSettings4Mongo.png" width="350px">
 
 #### Launch Dockerized MongoDB image:
 <img src="_res/LaunchDocker4Mongo.png" width="650px">
+
+### Embedded Mongo
+1. needs a new dependency in [pom.xml](pom.xml)
+2. in Profile=test, do **not** set 'spring.data.mongodb.uri'
+3. result: when in unittest, the embedded mongo is used!
 
 ## TODO:
 1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
