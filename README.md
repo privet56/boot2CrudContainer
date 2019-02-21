@@ -221,10 +221,10 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 ## Mongo Settings
 1. add Spring Boot Starter support for MongoDB (see pic below)
 2. start Docker image with MongoDB: script: [./LaunchDocker4Mongo.sh](./LaunchDocker4Mongo.sh) (see second below pic)
-	1. change directory name /home/ghe/expoappmongodb/ to an existing dir in the script 
-3. Change Entity from SQL- to Document-based DB Annotatations, set base of Repo to MongoRepository 
-4. set .properties entries and specify MongoDB host (=the dockerized image) (we are not using embedded mongo)
-5. setup mongo user:
+	1. change directory name */home/ghe/expoappmongodb/* to an existing dir in the script 
+3. Change [Entity](./src/main/java/com/ng/crud/model/Event.java) from SQL- to Document-based DB Annotatations, set base of [Repo](./src/main/java/com/ng/crud/repo/EventRepo.java) to MongoRepository 
+4. set *application{-profilename}.properties* entries and specify MongoDB host (=the dockerized image) *(we are not using embedded mongo)* , e.g. [./src/main/resources/application.properties](./src/main/resources/application.properties)
+5. setup mongo user (in a bash shell):
 ```sh
 docker exec -it expoappmongo bash
 mongo -u expoapp -p s3cr3t
@@ -236,7 +236,7 @@ quit()
 	1. $ sudo apt install mongodb-clients 	# if you would like to use mongo from the cmdline
 	2. $ docker stop expoappmongo 			# shutdown running docker
 	3. slight disadvantage of this setup:
-		1. as the mongodb data is permanent, the unit tests have to be adjusted (as we dont use embedded inmemory mongo)
+		1. as the mongodb data is permanent, the [unit tests](./src/test/java/com/ng/crud/controller/EventControllerTest.java) have to be adjusted *(as we dont use embedded inmemory mongo)*
 		2. the containerized mongodb has to run during unit tests
 
 #### Initialzr setting for MongoDB support:
