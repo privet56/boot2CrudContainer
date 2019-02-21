@@ -28,6 +28,9 @@ Spring Boot App with REST WebServices in Docker Container with MongoDB, Kubernet
 http://localhost:8080/swagger-ui.html
 <img src="_res/swagger.api.png" width="650px">
 
+### Java source-code based, annotation controlled Swagger definition:
+<img src="_res/swaggerAnnos2SwaggerApiDef.png" width="650px">
+
 ## Docker build & run
 (optional: you can docker-build through a maven-goal too (with a maven plug-in inserted in your pom.xml))
 
@@ -257,5 +260,6 @@ quit()
 	1. https://github.com/swagger-api/swagger-codegen/wiki/Server-stub-generator-HOWTO#java-springboot
 	2. http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.1/swagger-codegen-cli-2.4.1.jar
 	3. java -jar swagger-codegen-cli.jar generate -i CrudApp_0.0.2.yaml -l spring -o generated/spring-server -c CrudApp_config.json
-4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/annotations
+4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X
+
 
