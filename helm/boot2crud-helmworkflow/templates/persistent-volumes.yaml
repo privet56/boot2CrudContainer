@@ -1,0 +1,32 @@
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: {{ .Values.mongo.pv.name | quote }}
+  labels: 
+    pvc: {{ .Values.mongo.pv.persistentVolumeClaimLabel }}
+    type: local
+spec:
+  storageClassName: {{ .Values.mongo.pvc.storageClassName | quote }}
+  capacity:
+    storage: {{ .Values.mongo.pvc.capacity | quote }}
+  volumeMode: Filesystem
+  # Delete(default)|Recycle|Retain
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    type: localObjectReference
+    path: {{ .Values.mongo.pv.hostPath | quote }}
+  accessModes:
+    - {{ .Values.mongo.pvc.accessMode | quote }}
+  hostpath:
+    path: {{ .Values.mongo.pv.hostPath | quote }}
+    type: Directory
+  nodeAffinity:
+    required:
+    
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          values:
+          # it must be the name of your node(kubectl get nodes)
+          - minikube
+          operator: In

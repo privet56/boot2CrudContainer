@@ -106,6 +106,10 @@ Deployment- & Service defintions:
 			2. vi-save: [ESC]-:w
 			3. vi-quit: [ESC]-:q!
 		3. restart pods
+2. how to cleanup the local registry?
+	1. docker exec -it registry sh
+	2. cd cd /var/lib/registry/docker/registry/v2/repositories
+	3. rm -rf ./boot2crud_image
 
 ## Helm
 ### Install on Ubuntu
@@ -133,6 +137,14 @@ helm delete <deployment-name>
 <img src="_res/helm.installed.pod.png" width="650px">
 
 #### TODO: solve 'Liveness probe failed' on local deployment
+
+### Helm Gotchas
+1. message: "failed: the server could not find the requested resource` error"
+	1. One of our templates was missing the ApiVersion line altogether
+2. chart syntax check:
+	1. $ helm lint boot2crud-helmworkflow/
+3. mongo setup in helm-created deployment:
+	1. $ kubectl exec -it deployment-mongo-7fc7ccd496-9cz6x -- /bin/bash
 
 ## Istio
 ```sh
@@ -262,4 +274,15 @@ quit()
 	3. java -jar swagger-codegen-cli.jar generate -i CrudApp_0.0.2.yaml -l spring -o generated/spring-server -c CrudApp_config.json
 4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X
 
-
+## Ubuntu in VM hints:
+1. use better VirtualBox instead of VMWare
+	(Vbox is faster)
+2. to exchange files between VM and host: use shared folder
+	1. install VBox guest additions
+	2. specify path to be shared in the VBox UI
+	3. path: /media/sf_temp		# use it with krusader in root mode!
+2. for clipboard:
+	1. activate clipboard-sharing in the VBox UI
+	2. $ sudo apt-get install virtualbox-guest-dkms
+	3. reboot
+3. VM escape fullscreen shortcuts: host+F, strg-right, host-pos1 (host = right-ctrl)

@@ -16,6 +16,27 @@ service:
   type: ClusterIP
   port: 8080
 
+mongo:
+  name: deployment-mongo
+  tag: latest
+  username: expoapp
+  password: s3cr3t
+  pvc:
+    name: mongopvc
+    # manual = local
+    # local-storage
+    storageClassName: local-storage
+    # alternative accessMode: ReadWriteOnce
+    accessMode: "ReadWriteMany"
+    capacity: 1Gi
+    label: "mongopvclabel"
+  pv:
+    name: mongopv
+    # persistentVolumeClaim label for pvc to find and bind to
+    persistentVolumeClaimLabel: "mongopvclabel"
+    hostPath: "/home/ghe/expoappmongodbk8s"
+  
+
 ingress:
   enabled: false
   annotations: {}

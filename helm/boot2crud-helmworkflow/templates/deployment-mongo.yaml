@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongo.name }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.mongo.name }}
+    helm.sh/chart: "{{ .Values.mongo.name }}_chart"
+    app.kubernetes.io/instance: "{{ .Values.mongo.name }}_release"
+    app.kubernetes.io/managed-by: "{{ .Values.mongo.name }}_service"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.mongo.name }}
+      app.kubernetes.io/instance: "{{ .Values.mongo.name }}_release"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.mongo.name }}
+        app.kubernetes.io/instance: "{{ .Values.mongo.name }}_release"
+    spec:
+      containers:
+        - name: {{ .Values.mongo.name }}
+          #image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "mongo:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: {{ .Values.mongo.username }}
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: {{ .Values.mongo.password }}
+          volumeMounts:
+            - mountPath: "/data/db"
+              name: "{{ .Values.mongo.pv.name }}"
+          ports:
+            - name: http
+              containerPort: 27017
+              protocol: TCP
+#          livenessProbe:
+#            httpGet:
+#              path: /?livenessProbe
+#              port: 27017
+#             scheme: HTTP
+#            initialDelaySeconds: 3
+#            periodSeconds: 5
+#            timeoutSeconds: 2
+#          readinessProbe:
+#            httpGet:
+#              path: /?readinessProbe
+#              port: 27017
+#              scheme: HTTP
+#            initialDelaySeconds: 3
+#            periodSeconds: 5
+#            timeoutSeconds: 2
+      volumes:
+      - name: "{{ .Values.mongo.pv.name }}"
+        persistentVolumeClaim:
+          claimName: {{ .Values.mongo.pvc.name | quote }}
