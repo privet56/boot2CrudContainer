@@ -108,7 +108,7 @@ Deployment- & Service defintions:
 		3. restart pods
 2. how to cleanup the local registry?
 	1. docker exec -it registry sh
-	2. cd cd /var/lib/registry/docker/registry/v2/repositories
+	2. cd /var/lib/registry/docker/registry/v2/repositories
 	3. rm -rf ./boot2crud_image
 
 ## Helm
