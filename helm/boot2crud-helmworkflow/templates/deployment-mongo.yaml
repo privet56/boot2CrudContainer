@@ -21,7 +21,6 @@ spec:
     spec:
       containers:
         - name: {{ .Values.mongo.name }}
-          #image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           image: "mongo:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:

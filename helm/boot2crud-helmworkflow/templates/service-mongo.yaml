@@ -13,7 +13,7 @@ spec:
     - port: 27017
       targetPort: 27017
       protocol: TCP
-      name: http
+      name: mongo
   selector:
     app.kubernetes.io/name: {{ .Values.mongo.name }}
     app.kubernetes.io/instance: "{{ .Values.mongo.name }}_release"

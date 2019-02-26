@@ -23,7 +23,6 @@ mongo:
   password: s3cr3t
   pvc:
     name: mongopvc
-    # manual = local
     # local-storage
     storageClassName: local-storage
     # alternative accessMode: ReadWriteOnce

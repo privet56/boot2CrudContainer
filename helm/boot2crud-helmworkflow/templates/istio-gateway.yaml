@@ -1,0 +1,91 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: tcpbin-gateway
+spec:
+  selector:
+###    app.kubernetes.io/name: boot2crud-helmworkflow
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 27017
+      name: mongo
+      protocol: MONGO
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tcpbin
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - tcpbin-gateway
+  tcp:
+  - match:
+    - port: 27017
+      #sourceSubnet: "0.0.0.0/0"
+    route:
+    - destination:
+        port:
+          number: 27017
+        host: deployment-mongo
+      weight: 100
+        #host: deployment-mongo.svc.cluster.local   # na, so net
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: serviceentry-deployment-mongo
+spec:
+  hosts:
+  - deployment.mongo
+  ports:
+  - number: 27017
+    name: mongo
+    protocol: MONGO
+  location: MESH_INTERNAL
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: deployment-mongo-destination
+spec:
+  host: deployment-mongo
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 8080
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - httpbin-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: httpbin

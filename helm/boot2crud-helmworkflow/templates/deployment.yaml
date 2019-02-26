@@ -25,8 +25,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: SPRING_DATA_MONGODB_URI
-            #value: "mongodb://DEPLOYMENT_MONGO_SERVICE_HOST:{{ .Values.mongo.password }}@{{ .Values.mongo.name }}:27017/expodb"
-            #value: mongodb://expoapp:s3cr3t@localhost:27017/expodb
+            # example value: mongodb://expoapp:s3cr3t@localhost:27017/expodb
             value: "mongodb://{{ .Values.mongo.username }}:{{ .Values.mongo.password }}@{{ .Values.mongo.name }}:27017/expodb"
             
           ports:
