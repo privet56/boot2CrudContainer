@@ -1,0 +1,5 @@
+{
+    "modelPackage" : "com.boot2crud.expoapp.generated.model",
+    "apiPackage" : "com.boot2crud.expoapp.generated.api",
+    "java8" : true
+}

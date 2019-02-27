@@ -60,6 +60,7 @@ docker push localhost:5000/boot2crud_image
 
 ### if you want to use kvm as k8s-minikube-vm-driver:
 # apt install libvirt-clients libvirt-daemon-system qemu-kvm
+# curl -LO https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-kvm2  && sudo install docker-machine-driver-kvm2 /usr/local/bin/
 # usermod -a -G libvirt $(whoami)
 # newgrp libvirt
 
@@ -67,7 +68,7 @@ grep -c ^processor /proc/cpuinfo	# returns numCPU
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
 cp minikube /usr/local/bin
-minikube start --vm-driver=kvm2 --insecure-registry localhost
+minikube start --vm-driver=kvm2 --insecure-registry localhost --cpus 4
 
 minikube dashboard 
 
@@ -106,10 +107,13 @@ Deployment- & Service defintions:
 			2. vi-save: [ESC]-:w
 			3. vi-quit: [ESC]-:q!
 		3. restart pods
+	3. delete pod:
+		1. $ kubectl delete pods istio-tracing-6b994895fd-wzvqq -n istio-system
 2. how to cleanup the local registry?
 	1. docker exec -it registry sh
 	2. cd /var/lib/registry/docker/registry/v2/repositories
 	3. rm -rf ./boot2crud_image
+3. use the istio forum: https://discuss.istio.io/
 
 ## Helm
 ### Install on Ubuntu
