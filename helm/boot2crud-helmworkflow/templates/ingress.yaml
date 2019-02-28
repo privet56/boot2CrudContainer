@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: boot2crudingress
+  annotations:
+    # This is necessary if the target services expect requests from the root URL
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: boot2crud.info
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "boot2crud-helmworkflow.fullname" . }}
+          servicePort: 8080

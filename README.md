@@ -69,7 +69,7 @@ curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
 cp minikube /usr/local/bin
 minikube start --vm-driver=kvm2 --insecure-registry localhost --cpus 4
-
+minikube addons enable ingress		# actually, a lot more to be done (/etc/hosts : {minikube ip} boot2crud.info)
 minikube dashboard 
 
 # remember to turn off the imagePullPolicy:Always, as otherwise Kubernetes won't use images you built locally.
@@ -114,6 +114,8 @@ Deployment- & Service defintions:
 	2. cd /var/lib/registry/docker/registry/v2/repositories
 	3. rm -rf ./boot2crud_image
 3. use the istio forum: https://discuss.istio.io/
+4. error in swagger-ui: "TypeError: NetworkError when attempting to fetch resource"
+	1. make sure you use kubectl port-forward to access your app!
 
 ## Helm
 ### Install on Ubuntu
@@ -155,7 +157,7 @@ helm delete <deployment-name>
 curl -L https://git.io/getLatestIstio | sh -
 # kubectl apply -f install/kubernetes/istio-demo-auth.yaml			# without helm
 # better with helm (here allowing local(minikube) egress traffic!):
-helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set tracing.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.yaml
+helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set ingress.enable=true --set tracing.enabled=true --set zipkin.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.yaml
 # ^this is on minikube, on the cloud set differently IP range!, see: https://istio.io/docs/tasks/traffic-management/egress/#calling-external-services-directly
 kubectl create namespace istio-system
 kubectl apply -f ./istio4boot2crud.yaml
@@ -279,8 +281,11 @@ quit()
 4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X
 
 ## Ubuntu in VM hints:
-1. use better VirtualBox instead of VMWare
-	(Vbox is faster)
+1. use better VirtualBox or VMWare? - unsure...
+	1. Vbox is maybe faster
+	2. VMWare has better kvm support
+	3. on both of them, use at least 4 CPUs and 12 GB RAM
+	4. istio likes VMWare a little bit better...
 2. to exchange files between VM and host: use shared folder
 	1. install VBox guest additions
 	2. specify path to be shared in the VBox UI
