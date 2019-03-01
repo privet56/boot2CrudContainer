@@ -105,6 +105,12 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+  - port:
+      number: 5000
+      name: http5000
+      protocol: HTTP
+    hosts:
+    - "*"
  # - port:
  #     number: 443
  #     name: http443
@@ -161,6 +167,12 @@ spec:
   - port:
       number: 9411
       name: http9411
+      protocol: HTTP
+    hosts:
+    - "*"
+  - port:
+      number: 5000
+      name: http5000
       protocol: HTTP
     hosts:
     - "*"
