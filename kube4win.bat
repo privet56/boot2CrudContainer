@@ -1,1 +1,1 @@
-set PATH=%PATH%;c:\kube
+set PATH=%PATH%;c:\Program Files\Oracle\VirtualBox;c:\kube
