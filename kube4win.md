@@ -23,19 +23,20 @@
 	1. (helm-init & docker-registry-setup should be done always after a minikube delete)
 7. create dir within the minikube VM
 	1. sudo mkdir /data/ghe/expoappmongodbk8s			# /data/ is persistent, most of the dirs inside the minikube VM are non-permanent!
-	2. sudo chmod -R 777 /data/ghe/expoappmongodbk8s	# 777 = world writable (775 would be group-writable only)
+	2. sudo chmod 777 /data/ghe/expoappmongodbk8s		# 777 = world writable (775 would be group-writable only)
 
 ## Install istio
 1. download istio ZIP manually & unpack
 2. exec in itio's dir:
-	1. helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set ingress.enable=true --set tracing.enabled=true --set zipkin.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.windows.yaml
+	1. helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set servicegraph.enable=true --set ingress.enable=true --set tracing.enabled=true --set zipkin.enabled=true --set grafana.enabled=true --set servicegraph.enabled=true --set global.proxy.includeIPRanges="10.0.0.1/24" > ./istio4boot2crud.windows.1.0.5.yaml
 	2. kubectl create namespace istio-system
 	3. kubectl label namespace default istio-injection=enabled
 	4. kubectl apply -f ./istio4boot2crud.windows.yaml
-	5. pray! (+check in the k8s dashboard)
+	5. pray! (+check in the k8s dashboard or with cmd 'kubectl get pods -n istio-system')
 	
 ## Install your app
-1. check if minikube & istio are running fine
+1. check if minikube & istio are up & running fine! use command:
+	1. kubectl get pods -n istio-system
 2. helm install boot2crud-helmworkflow/ (as described in [README.md](README.md#helm))
 3. kubectl port-forward (not all of these is needed on linux...)
 	1. kubectl port-forward sad-ant-boot2crud-helmworkflow-9c59fd66d-wc66m 8080
