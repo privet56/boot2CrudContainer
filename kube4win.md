@@ -10,7 +10,7 @@
 5. download helm.exe (and tiller.exe)
 
 ## Setup k8s
-1. put the above binaries into c:\kube\ & your PATH (it has to be C:\!)
+1. put the above binaries into **c:/kube/** & your PATH (eg. by using kube4win.bat, it has to be **C:/**!)
 2. // minikube get-k8s-versions	# not possible any more ... :-(
 3. start (not as admin) from C:\kube\
 	0. execute [kube4win.bat](kube4win.bat)
@@ -20,7 +20,7 @@
 4. kubectl.exe cluster-info
 5. minikube.exe dashboard --url=true	# -> open it!
 6. helm init & start docker registry(**inside** of the minikube VM!) (as described in [README.md](README.md))
-	1. helm init should be done always after a minikube delete
+	1. (helm-init & docker-registry-setup should be done always after a minikube delete)
 
 ## Install istio
 1. download istio ZIP manually & unpack
@@ -34,6 +34,8 @@
 ## Install your app
 1. check if minikube & istio are running fine
 2. helm install boot2crud-helmworkflow/ (as described in [README.md](README.md#helm))
+3. kubectl port-forward {yourapp|prometheus|grafana|jaeger-ui} 8080|9090|3000|16686 [-n istio-system]
+	1. (not all of these is needed on linux...)
 
 ## Gotchas:
 1. Error restarting cluster: restarting kube-proxy: waiting for kube-proxy to be up for configmap update: timed out waiting for the condition
