@@ -33,7 +33,8 @@ mongo:
     name: mongopv
     # persistentVolumeClaim label for pvc to find and bind to
     persistentVolumeClaimLabel: "mongopvclabel"
-    hostPath: "/home/ghe/expoappmongodbk8s"
+    # create this dir manually on your host(linux) or within your minikube VM(windows, incl set chmod 777)
+    hostPath: "/data/ghe/expoappmongodbk8s"
   
 
 ingress:

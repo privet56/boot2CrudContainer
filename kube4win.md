@@ -21,6 +21,9 @@
 5. minikube.exe dashboard --url=true	# -> open it!
 6. helm init & start docker registry(**inside** of the minikube VM!) (as described in [README.md](README.md))
 	1. (helm-init & docker-registry-setup should be done always after a minikube delete)
+7. create dir within the minikube VM
+	1. sudo mkdir /data/ghe/expoappmongodbk8s			# /data/ is persistent, most of the dirs inside the minikube VM are non-permanent!
+	2. sudo chmod -R 777 /data/ghe/expoappmongodbk8s	# 777 = world writable (775 would be group-writable only)
 
 ## Install istio
 1. download istio ZIP manually & unpack
@@ -34,8 +37,11 @@
 ## Install your app
 1. check if minikube & istio are running fine
 2. helm install boot2crud-helmworkflow/ (as described in [README.md](README.md#helm))
-3. kubectl port-forward {yourapp|prometheus|grafana|jaeger-ui} 8080|9090|3000|16686 [-n istio-system]
-	1. (not all of these is needed on linux...)
+3. kubectl port-forward (not all of these is needed on linux...)
+	1. kubectl port-forward sad-ant-boot2crud-helmworkflow-9c59fd66d-wc66m 8080
+	2. kubectl port-forward prometheus-76b7745b64-w8mcx 9090 -n istio-system
+	3. kubectl port-forward grafana-59b8896965-gn7rv 3000 -n istio-system
+	4. kubectl port-forward istio-tracing-6b994895fd-npjnc 16686 -n istio-system		# jaeger ui
 
 ## Gotchas:
 1. Error restarting cluster: restarting kube-proxy: waiting for kube-proxy to be up for configmap update: timed out waiting for the condition

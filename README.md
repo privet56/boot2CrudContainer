@@ -242,7 +242,7 @@ kubectl <your-istio-helm-installation> apply --set global.proxy.includeIPRanges=
 ## Mongo Settings
 1. add Spring Boot Starter support for MongoDB (see pic below)
 2. start Docker image with MongoDB: script: [./LaunchDocker4Mongo.sh](./LaunchDocker4Mongo.sh) (see second below pic)
-	1. change directory name */home/ghe/expoappmongodb/* to an existing dir in the script 
+	1. change directory name */data/ghe/expoappmongodb/* to an existing dir in the script 
 3. Change [Entity](./src/main/java/com/ng/crud/model/Event.java) from SQL- to Document-based DB Annotatations, set base of [Repo](./src/main/java/com/ng/crud/repo/EventRepo.java) to MongoRepository 
 4. set *application{-profilename}.properties* entries and specify MongoDB host (=the dockerized image) *(we are not using embedded mongo)* , e.g. [./src/main/resources/application.properties](./src/main/resources/application.properties)
 5. setup mongo user (in a bash shell):
@@ -279,6 +279,7 @@ quit()
 	2. http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.1/swagger-codegen-cli-2.4.1.jar
 	3. java -jar swagger-codegen-cli.jar generate -i CrudApp_0.0.2.yaml -l spring -o generated/spring-server -c CrudApp_config.json
 4. evaluate java-annotations to swagger possibility with https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X
+5. execute script automatically db.createUser(...) in the mongo VM!
 
 ## Ubuntu in VM hints:
 1. use better VirtualBox or VMWare? - unsure...
