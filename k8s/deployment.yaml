@@ -17,4 +17,5 @@ spec:
               image: localhost:5000/boot2crud_image:latest
               imagePullPolicy: IfNotPresent
               ports:
-              - containerPort: 8080
+              - name: http
+                containerPort: 8080
