@@ -112,6 +112,15 @@ public class EventController
 		if(page == null)page = 0;
 		if(hitsperpage == null)hitsperpage = 10;
 		
+/*//TODO: set headers for istio-distributed-tracing! see https://istio.io/docs/tasks/telemetry/distributed-tracing/#understanding-what-happened
+@HeaderParam("x-request-id") String xreq,
+@HeaderParam("x-b3-traceid") String xtraceid,
+@HeaderParam("x-b3-spanid") String xspanid,
+@HeaderParam("x-b3-parentspanid") String xparentspanid,
+@HeaderParam("x-b3-sampled") String xsampled,
+@HeaderParam("x-b3-flags") String xflags,
+@HeaderParam("x-ot-span-context") String xotspan
+*/
 		Pageable pageable = PageRequest.of(page, hitsperpage, Sort.by("DESC".equalsIgnoreCase(sortDirection) ? Direction.DESC : Direction.ASC, sortBy));
 		return this.eventRepo.findAll(pageable); //page has totalpages & totalelements
     }
