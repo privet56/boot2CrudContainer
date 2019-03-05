@@ -52,3 +52,5 @@
 
 ## Running 2 VMs (docker & minikube) on Windows with VirtualBox, accessing them with WinSCP(docker:tcuser):
 <img src="_res/kube.on.win.png" width="650px">
+
+<img src="_res/kube.on.win.with.bins.and.istio.png" width="650px">
