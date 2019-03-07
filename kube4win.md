@@ -33,6 +33,8 @@
 	3. kubectl label namespace default istio-injection=enabled
 	4. kubectl apply -f ./istio4boot2crud.windows.1.0.5.yaml
 	5. pray! (+check in the k8s dashboard or with cmd 'kubectl get pods -n istio-system')
+
+Alternative: execute [./k8s/istio.install.without.mtls.bat](./k8s/istio.install.without.mtls.bat) in the dir of istio.
 	
 ## Install your app
 1. check if minikube & istio are up & running fine! use command:
