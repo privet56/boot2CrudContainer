@@ -44,22 +44,21 @@ public class EventControllerTest
 	            .content(asJsonString(e))
 	            .accept(MediaType.APPLICATION_JSON))
 	            .andExpect(status().isOk())                   
-	            .andExpect(content().contentType
-	                 (MediaType.APPLICATION_JSON_UTF8_VALUE));
+	            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 
-		/*MvcResult result = */mvc.perform(get("/api/event")
+		MvcResult result = mvc.perform(get("/api/event")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
 			      .andExpect(jsonPath("$[\"content\"]", hasSize(1)))					//when in-memory (=clean) db
 			      //.andExpect(jsonPath("$[\"content\"]", hasSize(greaterThan(0))))		//when existing (probably already filled) db
-			      .andExpect(jsonPath("$[\"content\"][0].title", is(e.getTitle())));
-			      //.andReturn();
+			      .andExpect(jsonPath("$[\"content\"][0].title", is(e.getTitle())))
+			      .andReturn();
 		
 		//{"content":[{"id":"b75d5ed5-44dc-49f6-bfbc-2d09eff05f6e","title":"title","startDate":3,"endDate":null,"type":null,"location":"location","description":"description","createdBy":null,"lastUpdatedBy":null,"createdAt":1550599585830,"lastUpdatedAt":1550599585830}],"pageable":{"sort":{"sorted":true,"unsorted":false,"empty":false},"offset":0,"pageSize":10,"pageNumber":0,"paged":true,"unpaged":false},"totalPages":1,"totalElements":1,"last":true,"size":10,"number":0,"sort":{"sorted":true,"unsorted":false,"empty":false},"first":true,"numberOfElements":1,"empty":false}
 		//String content = result.getResponse().getContentAsString();
 		//System.out.println(content);
 		
-		System.out.println("event with title '"+e.getTitle()+"' saved.");
+		System.out.println("event with title '"+e.getTitle()+"' saved. x-request-id:" + result.getResponse().getHeader("x-request-id"));
 	}
 
 	private Event getDummyEvent()

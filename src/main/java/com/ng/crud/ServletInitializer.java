@@ -1,7 +1,10 @@
 package com.ng.crud;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 public class ServletInitializer extends SpringBootServletInitializer
 {
