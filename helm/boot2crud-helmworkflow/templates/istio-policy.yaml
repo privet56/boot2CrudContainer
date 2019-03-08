@@ -1,3 +1,6 @@
+## v1alpha2: RouteRule, DestinationPolicy, EgressRule, and (Kubernetes) Ingress
+## v1alpha3: Gateway, VirtualService, DestinationRule, ServiceEntry
+
 apiVersion: "authentication.istio.io/v1alpha1"
 kind: "Policy"
 metadata:

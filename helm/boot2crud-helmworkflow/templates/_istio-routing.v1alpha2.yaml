@@ -1,0 +1,80 @@
+## v1alpha2: RouteRule, DestinationPolicy, EgressRule, and (Kubernetes) Ingress
+## v1alpha3: Gateway, VirtualService, DestinationRule, ServiceEntry
+
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+ name: {{ include "boot2crud-helmworkflow.fullname" . }}-default
+spec:
+ destination:
+  # destination service name
+  name: {{ include "boot2crud-helmworkflow.fullname" . }}
+ precedence: 1
+# match:
+#  request:
+#   headers:
+#    user-agent:
+#     regex: ".*Safari.*"
+ route:
+ - labels:
+    version: serviceVersion1
+    weight: 100
+ - labels:
+    version: serviceVersion2
+    weight: 0
+ httpReqRetries:
+  simpleRetry:
+    perTryTimeout: 9s
+    attempts: 3
+# generate errors:
+# httpFault:
+#  abort:
+#   percent: 50
+#   httpStatus: 503
+#  delay:
+#   percent: 50
+#   fixedDelay: 7s
+
+# httpReqTimeout:
+#  simpleTimeout:
+#    timeout: 11s
+
+# ^ route 100% of the traffic to the service with the specific version label
+
+---
+apiVersion: config.istio.io/v1alpha2
+kind: EgressRule
+metadata:
+ name: google-egress-rule
+spec:
+ destination:
+ service: google.com
+ ports:
+ - port: 80
+ protocol: http
+
+# ^ allow outgoing traffic only towards google.com
+
+---
+apiVersion: config.istio.io/v1alpha2
+kind: DestinationPolicy
+metadata:
+ name: service-loadbalancer
+spec:
+# source:
+#  name: anotherServiceName
+ destination:
+  # destination service name
+  name: {{ include "boot2crud-helmworkflow.fullname" . }}
+ loadBalancing:
+  # ROUND_ROBIN, RANDOM, LEAST_CONN
+  name: RANDOM
+ circuitBreaker:
+  simpleCb:
+    maxConnections: 9
+    httpMaxPendingRequests: 9
+    sleepWindow: 2m
+    httpDetectionInterval: 1s
+    httpMaxEjectionPercent: 100
+    httpConsecutiveErrors: 1
+    httpMaxRequestsPerConnection: 1

@@ -56,3 +56,6 @@ Alternative: execute [./k8s/istio.install.without.mtls.bat](./k8s/istio.install.
 <img src="_res/kube.on.win.png" width="650px">
 
 <img src="_res/kube.on.win.with.bins.and.istio.png" width="650px">
+
+#### Monitoring of the Cluster (grafana plugin: 9135)
+<img src="_res/grafana.k8s.cluster.monitoring.via.prometheus.png" width="650px">

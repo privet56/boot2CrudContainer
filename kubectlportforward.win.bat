@@ -1,6 +1,6 @@
 set PATH=%PATH%;c:\Program Files\Oracle\VirtualBox;c:\kube
 rem my app
-start cmd /k kubectl port-forward turbulent-catfish-boot2crud-helmworkflow-7798b7647b-lx7mq 8080
+start cmd /k kubectl port-forward cranky-panther-boot2crud-helmworkflow-7986d4b745-6b8bx 8080
 rem port-forward from prometheus pod by name
 start cmd /k kubectl port-forward prometheus-76b7745b64-wgv44 9090 -n istio-system
 rem grafana
