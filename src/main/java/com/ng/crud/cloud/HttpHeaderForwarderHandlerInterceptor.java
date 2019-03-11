@@ -52,7 +52,7 @@ public class HttpHeaderForwarderHandlerInterceptor extends HandlerInterceptorAda
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception
     {
-    	getHeaders().forEach((key, values) -> { if(values.size() > 0)response.setHeader(key, values.get(0)); });	//use the BiConsumer!
+    	//getHeaders().forEach((key, values) -> { if(values.size() > 0)response.setHeader(key, values.get(0)); });	//use the BiConsumer!
     	
         HEADERS_THREAD_LOCAL.remove();
     }

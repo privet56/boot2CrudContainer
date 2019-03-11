@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter; = deprecated -> use WebMvcConfigurer
 
 import com.ng.crud.cloud.HttpHeaderForwarderClientHttpRequestInterceptor;
 import com.ng.crud.cloud.HttpHeaderForwarderHandlerInterceptor;
 
 @Configuration
-public class CloudMvcConfigurerAdapter extends WebMvcConfigurerAdapter
+public class CloudMvcConfigurerAdapter implements org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry)
