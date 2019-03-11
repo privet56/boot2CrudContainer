@@ -150,7 +150,12 @@ helm delete <deployment-name>
 2. chart or yaml syntax check / validation:
 	1. $ helm lint boot2crud-helmworkflow/
 	2. kubectl apply -f my.yaml --dry-run --validate
-	3. helm install boot2crud-helmworkflow/ --dry-run --debug 
+	3. helm install boot2crud-helmworkflow/ --dry-run --debug
+		1. debug by printing out the result of an expression, when running with the flags --dry-run --debug:
+```yaml
+			# problem: can't figure out what this will evaluate to?
+			# {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+```
 3. mongo setup in helm-created deployment:
 	1. $ kubectl exec -it deployment-mongo-7fc7ccd496-9cz6x -- /bin/bash
 
