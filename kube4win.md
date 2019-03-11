@@ -39,7 +39,7 @@ Alternative: execute [./k8s/istio.install.without.mtls.bat](./k8s/istio.install.
 ## Install your app
 1. check if minikube & istio are up & running fine! use command:
 	1. kubectl get pods -n istio-system
-2. helm install boot2crud-helmworkflow/ (as described in [README.md](README.md#helm))
+2. helm install --name boot2crud boot2crud-helmworkflow/ (as described in [README.md](README.md#helm))
 3. kubectl port-forward (not all of these is needed on linux...) (or use [kubectlportforward.win.bat](kubectlportforward.win.bat))
 	1. kubectl port-forward {deployment}-{name}-boot2crud-helmworkflow-{podname} 8080
 	2. kubectl port-forward prometheus-{podname} 9090 -n istio-system

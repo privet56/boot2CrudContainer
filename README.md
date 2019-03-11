@@ -134,7 +134,7 @@ helm chart (placeholder configuration):
 cd helm
 helm create boot2crud-helmworkflow
 # edit placeholder values manually in the created yaml files...
-helm install boot2crud-helmworkflow/ 		# outputs also the created deployment name
+helm install --name boot2crud boot2crud-helmworkflow/ 		# outputs also the created deployment name
 # cleanup:
 helm delete <deployment-name>
 ```
@@ -147,8 +147,10 @@ helm delete <deployment-name>
 ### Helm Gotchas
 1. message: "failed: the server could not find the requested resource` error"
 	1. One of our templates was missing the ApiVersion line altogether
-2. chart syntax check:
+2. chart or yaml syntax check / validation:
 	1. $ helm lint boot2crud-helmworkflow/
+	2. kubectl apply -f my.yaml --dry-run --validate
+	3. helm install boot2crud-helmworkflow/ --dry-run --debug 
 3. mongo setup in helm-created deployment:
 	1. $ kubectl exec -it deployment-mongo-7fc7ccd496-9cz6x -- /bin/bash
 
