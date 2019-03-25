@@ -20,9 +20,11 @@ docker run --rm -p 8080:8080 -it -e "FIRESTORE_PROJECT_ID=expoapp" --name my_gcl
 docker exec -it --name my_gcloud /bin/bash
 > 
 ```
-
 check: localhost:<PORT>/ should show 'Ok' in a browser<br>
 export FIRESTORE_EMULATOR_HOST=localhost:8080
 
+#### Running emulated gloud in docker container:
 <img src="../_res/firestoreAsDockerContainer.png" width="650px">
+
+#### Running firestore-testing:
 <img src="../_res/firebaseTestingContainerizedFirestore.png" width="650px">
