@@ -6,11 +6,23 @@ docker build -t my_google_sdk_docker:alpine .
 # del: docker rmi my_google_sdk_docker:alpine
 # check if image built:
 docker image ls | grep my_google_sdk_docker
-# //TODO:_is persistence necessary? (-v ${PWD}/firestore-data:/opt/data)
-docker run --rm -p 8040:8040 -it --name my_gcloud my_google_sdk_docker:alpine /bin/bash
+# TAKE CARE: **ONLY** localhost:8080 is supported by the nodejs lib '@firebase/testing'
+# //TODO: is persistence necessary? (-v ${PWD}/firestore-data:/opt/data)
+docker run --rm -p 8080:8080 -it -e "FIRESTORE_PROJECT_ID=expoapp" --name my_gcloud my_google_sdk_docker:alpine /bin/bash
 > gcloud components list
-> gcloud beta emulators firestore start --host-port=localhost:8040
-```
-<img src="../_res/firestoreAsDockerContainer.png" width="650px">
-export FIRESTORE_EMULATOR_HOST=localhost:8040
+> gcloud beta emulators firestore start --host-port=0.0.0.0:8080
 
+# advanced: start everything in one line:
+docker run --rm -p 8080:8080 -it -e "FIRESTORE_PROJECT_ID=expoapp" --name my_gcloud my_google_sdk_docker:alpine /bin/bash -c "gcloud beta emulators firestore start --host-port=0.0.0.0:8080"
+```
+```sh
+# working inside of the container (write in another console):
+docker exec -it --name my_gcloud /bin/bash
+> 
+```
+
+check: localhost:<PORT>/ should show 'Ok' in a browser<br>
+export FIRESTORE_EMULATOR_HOST=localhost:8080
+
+<img src="../_res/firestoreAsDockerContainer.png" width="650px">
+<img src="../_res/firebaseTestingContainerizedFirestore.png" width="650px">
