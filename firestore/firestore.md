@@ -17,8 +17,11 @@ docker run --rm -p 8080:8080 -it -e "FIRESTORE_PROJECT_ID=expoapp" --name my_gcl
 ```
 ```sh
 # working inside of the container (write in another console):
-docker exec -it --name my_gcloud /bin/bash
-> 
+docker exec -it my_gcloud /bin/bash
+> ... 
+> exit
+# cleanup
+docker kill my_gcloud
 ```
 check: localhost:<PORT>/ should show 'Ok' in a browser<br>
 export FIRESTORE_EMULATOR_HOST=localhost:8080

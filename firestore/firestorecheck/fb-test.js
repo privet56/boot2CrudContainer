@@ -1,19 +1,19 @@
-const firebase = require('@firebase/testing');
+//set env before loading firebase script!
+process.env['FIREBASE_FIRESTORE_EMULATOR_ADDRESS'] = 'http://localhost:8040/';
 
-process.env['FIRESTORE_EMULATOR_HOST'] = 'http://localhost:8040/';
+const firebase = require('@firebase/testing');
 
 setTimeout(async function()
 {
   try
   {
     console.log("step-1");
-    const apps = firebase.initializeAdminApp({projectId: 'expoapp', databaseName: 'http://localhost:8040/', databaseURL: 'http://localhost:8040/', port: 8040, host: 'http://localhost:8040/',});
-    //apps.functions().useFunctionsEmulator('http://localhost:8040');
+    const apps = firebase.initializeAdminApp({projectId: 'expoapp', uid:'alice'});
     const app = firebase.apps()[0];
     const firestore = app.firestore();
     const posts = firestore.collection('posts');
     const document = posts.doc('intro-to-firestore'+(new Date()).getTime());
-    console.log("step: await document.set({ ...");
+    console.log("step: await document.set({ ... (emulator:"+process.env['FIREBASE_FIRESTORE_EMULATOR_ADDRESS']);
     await document.set({
       title: 'Welcome to Firestore',
       body: 'Hello World'+(new Date()).getTime(),
