@@ -47,3 +47,20 @@ gcloud iam service-accounts keys create --iam-account expoapp@expoapp-1.iam.gser
 
 ### GCLOUD - Java API usage:
 <img src="../_res/gcloud.java.api.2.png" width="650px">
+
+## Setup Steps
+* create gcloud account; start in the gcloud-docker-container:
+    * gcloud auth login         # refers to the URL to be used for login/signup
+* login on https://gcloud.console.google.com/
+* on the IAM page: create service account
+* on the Firestore page: create firestore database
+* in the gcloud-docker-container:
+    * gcloud auth login
+    * gcloud config set ...     # set project-id(expoapp-1), set account name(your email)
+    * gcloud projects list      # verify your project is known
+    * gcloud config list        # verify your project-id & name are set
+    * gcloud iam service-accounts keys create --iam-account expoapp@expoapp-1.iam.gserviceaccount.com cred.json
+* use the generated cred.json when accessing the firestore service; see:
+    * [../src/main/resources/cred.json](../src/main/resources/cred.json)
+    * [../src/main/java/com/ng/crud/cfg/AppStart.java](../src/main/java/com/ng/crud/cfg/AppStart.java)
+
