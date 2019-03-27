@@ -1,5 +1,6 @@
 package com.ng.crud.cfg;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,6 +27,9 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.cloud.FirestoreClient;
 
 //
@@ -37,62 +41,24 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 		new AppStart().onApplicationEvent(null);
 	}
 
-	public static class MockGoogleCredentials extends GoogleCredentials {
-
-		  private String tokenValue;
-		  private long expiryTime;
-
-		  public MockGoogleCredentials() {
-		    this(null);
-		  }
-
-		  public MockGoogleCredentials(String tokenValue) {
-		    this(tokenValue, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
-		  }
-
-		  public MockGoogleCredentials(String tokenValue, long expiryTime) {
-		    this.tokenValue = tokenValue;
-		    this.expiryTime = expiryTime;
-		  }
-
-		  @Override
-		  public AccessToken refreshAccessToken() throws IOException {
-		    return new AccessToken(tokenValue, new Date(expiryTime));
-		  }
-
-		  public void setExpiryTime(long expiryTime) {
-		    this.expiryTime = expiryTime;
-		  }
-		}
-	
-	public static final FirestoreOptions FIRESTORE_OPTIONS = FirestoreOptions.newBuilder()
-		      // Setting credentials is not required (they get overridden by Admin SDK), but without
-		      // this Firestore logs an ugly warning during tests.
-		      .setCredentials(new MockGoogleCredentials("owner"))
-		      .setTimestampsInSnapshotsEnabled(true)
-		      .build();
-	
 	@Override
 	public void onApplicationEvent(final ApplicationReadyEvent event)
 	{
 		try
 		{
-			String projectId = "expoapp";
+			String projectId = "expoapp-1";
 			String url = "http://localhost:8080/";
 			System.setProperty("FIRESTORE_EMULATOR_HOST", url);
-			//injectEnvironmentVariable("FIRESTORE_EMULATOR_HOST", url);
-			//Exception: java.io.IOException: The Application Default Credentials are not available. They are available if running in Google Compute Engine. Otherwise, the environment variable GOOGLE_APPLICATION_CREDENTIALS must be defined pointing to a file defining the credentials. See https://developers.google.com/accounts/docs/application-default-credentials
-			//GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();	// Use the application default credentials
+			injectEnvironmentVariable("FIRESTORE_EMULATOR_HOST", url);
 			
-			//FileInputStream serviceAccount = new FileInputStream("path/to/serviceAccountKey.json");
+			FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred.json");
 			
 			FirebaseOptions options = new FirebaseOptions.Builder()
 			    //.setCredentials(credentials)
-				//.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.setCredentials(new MockGoogleCredentials("test-token"))
+				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 			    .setProjectId(projectId)
 			    .setDatabaseUrl(url)
-			    .setFirestoreOptions(FIRESTORE_OPTIONS)
+			    //.setFirestoreOptions(FIRESTORE_OPTIONS)
 			    .build();
 			
 			FirebaseApp.initializeApp(options);
@@ -112,7 +78,7 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 			}
 			{	//read data
 				// asynchronously retrieve all users
-				ApiFuture<QuerySnapshot> query = db.collection("users").get();
+				ApiFuture<QuerySnapshot> query = db.collection("posts").get();
 				// ...
 				// query.get() blocks on response
 				QuerySnapshot querySnapshot = query.get();
@@ -162,3 +128,22 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 	        map.put(key, value);
 	    }
 }
+
+/*{
+CreateRequest request = new CreateRequest()
+        .setEmail("user@example.com")
+        .setEmailVerified(false)
+        .setPassword("secretPassword")
+        .setPhoneNumber("+11234567890")
+        .setDisplayName("John Doe")
+        .setPhotoUrl("http://www.example.com/12345678/photo.png")
+        .setDisabled(false);
+
+    UserRecord userRecord = FirebaseAuth.getInstance().createUserAsync(request).get();
+}*/
+
+//Exception: java.io.IOException: The Application Default Credentials are not available. They are available if running in Google Compute Engine. Otherwise, the environment variable GOOGLE_APPLICATION_CREDENTIALS must be defined pointing to a file defining the credentials. See https://developers.google.com/accounts/docs/application-default-credentials
+//GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();	// Use the application default credentials
+
+//File f = new File(".");
+//System.err.println(f.getCanonicalPath());//=project dir

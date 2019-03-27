@@ -29,5 +29,21 @@ export FIRESTORE_EMULATOR_HOST=localhost:8080
 #### Running emulated gloud in docker container:
 <img src="../_res/firestoreAsDockerContainer.png" width="650px">
 
-#### Running firestore-testing:
+#### Running firestore-testing (NodeJS API):
 <img src="../_res/firebaseTestingContainerizedFirestore.png" width="650px">
+
+## gcloud commands
+```sh
+gcloud config list
+gcloud config set core/account expo
+gcloud auth login
+gcloud projects list
+# to be used in the JAVA API:
+gcloud iam service-accounts keys create --iam-account expoapp@expoapp-1.iam.gserviceaccount.com cred.json
+```
+
+### GCLOUD - Create service account key for the Java API
+<img src="../_res/gcloud.keys.create.png" width="650px">
+
+### GCLOUD - Java API usage:
+<img src="../_res/gcloud.java.api.2.png" width="650px">
