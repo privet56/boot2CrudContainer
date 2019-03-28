@@ -40,6 +40,8 @@ gcloud auth login
 gcloud projects list
 # to be used in the JAVA API:
 gcloud iam service-accounts keys create --iam-account expoapp@expoapp-1.iam.gserviceaccount.com cred.json
+# alternative: generate app default credentials
+gcloud auth application-default login           # Credentials saved to file: [/root/.config/gcloud/application_default_credentials.json]
 ```
 
 ### GCLOUD - Create service account key for the Java API

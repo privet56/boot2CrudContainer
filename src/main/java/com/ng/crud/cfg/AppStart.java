@@ -37,7 +37,10 @@ import com.ng.crud.util.Env;
 @Component
 public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 {
-	public static final String FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST";
+	public static final String FIRESTORE_EMULATOR_HOST 				= "FIRESTORE_EMULATOR_HOST";
+	public static final String FIREBASE_FIRESTORE_EMULATOR_ADDRESS 	= "FIREBASE_FIRESTORE_EMULATOR_ADDRESS";
+	public static final String GOOGLE_APPLICATION_CREDENTIALS 		= "GOOGLE_APPLICATION_CREDENTIALS";
+	public static final String COLLECTION_NAME 						= "posts";
 	
 	public static void main(String[] args)
 	{
@@ -52,29 +55,33 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 			String projectId = "expoapp-1";
 			String url = "http://localhost:8080/";
 			
-			Env.setEnvVar(FIRESTORE_EMULATOR_HOST, url);
+			//GoogleCredentials.getApplicationDefault()//needs env var: GOOGLE_APPLICATION_CREDENTIALS
+			Env.setEnvVar(GOOGLE_APPLICATION_CREDENTIALS, (new File("."))+"/src/main/resources/cred-local.json");
+			Env.setEnvVar(FIRESTORE_EMULATOR_HOST				, url);
+			Env.setEnvVar(FIREBASE_FIRESTORE_EMULATOR_ADDRESS	, url);
 			
-			FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred.json");
+			FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred-local.json");
 			
 			FirebaseOptions options = new FirebaseOptions.Builder()//.setCredentials(credentials)
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+				//.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+				.setCredentials(GoogleCredentials.getApplicationDefault())		//reads GOOGLE_APPLICATION_CREDENTIALS
 			    .setProjectId(projectId)
 			    .setDatabaseUrl(url)
 			    .build();
 			
 			FirebaseApp.initializeApp(options);
 			Firestore db = FirestoreClient.getFirestore();
-			CollectionReference posts = db.collection("posts");
+			CollectionReference posts = db.collection(COLLECTION_NAME);
 			
 			{	//write data
 				DocumentReference docRef = posts.document("doc-"+System.currentTimeMillis());
 				Map<String, Object> data = new HashMap<>();
-				data.put("first", "Ada");
+				data.put("first", "Ada! "+System.currentTimeMillis());
 				ApiFuture<WriteResult> result = docRef.set(data);					// asynchronously write data,	result.get() blocks on response
 				out("Written!: " + result.get().getUpdateTime()+" \t getenv("+FIRESTORE_EMULATOR_HOST+") = "+System.getenv(FIRESTORE_EMULATOR_HOST));
 			}
 			{	//read data
-				ApiFuture<QuerySnapshot> query = db.collection("posts").get();		// asynchronously retrieve all users
+				ApiFuture<QuerySnapshot> query = db.collection(COLLECTION_NAME).get();		// asynchronously retrieve all users
 				QuerySnapshot querySnapshot = query.get();							// query.get() blocks on response
 				List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 				int i= 0;
