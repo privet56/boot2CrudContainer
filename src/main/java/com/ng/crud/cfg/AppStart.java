@@ -16,11 +16,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.google.api.core.ApiFuture;
+import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreFactory;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
@@ -53,24 +55,32 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 		try
 		{
 			String projectId = "expoapp-1";
-			String url = "http://localhost:8080/";
+			String url = "localhost:8080";
 			
 			//GoogleCredentials.getApplicationDefault()//needs env var: GOOGLE_APPLICATION_CREDENTIALS
 			Env.setEnvVar(GOOGLE_APPLICATION_CREDENTIALS, (new File("."))+"/src/main/resources/cred-local.json");
-			Env.setEnvVar(FIRESTORE_EMULATOR_HOST				, url);
-			Env.setEnvVar(FIREBASE_FIRESTORE_EMULATOR_ADDRESS	, url);
+			//Env.setEnvVar(FIRESTORE_EMULATOR_HOST				, url);
+			//Env.setEnvVar(FIREBASE_FIRESTORE_EMULATOR_ADDRESS	, url);
 			
-			FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred-local.json");
+			//FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred-local.json");
+			
+			InstantiatingGrpcChannelProvider.Builder b = FirestoreOptions.getDefaultInstance().getDefaultTransportChannelProviderBuilder().setEndpoint(url);
+			InstantiatingGrpcChannelProvider igcp = b.build();
+			FirestoreOptions firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder().setHost(url).setChannelProvider(igcp).build();
 			
 			FirebaseOptions options = new FirebaseOptions.Builder()//.setCredentials(credentials)
 				//.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.setCredentials(GoogleCredentials.getApplicationDefault())		//reads GOOGLE_APPLICATION_CREDENTIALS
 			    .setProjectId(projectId)
 			    .setDatabaseUrl(url)
+			    .setFirestoreOptions(firestoreOptions)
 			    .build();
 			
 			FirebaseApp.initializeApp(options);
+			
 			Firestore db = FirestoreClient.getFirestore();
+			
+			
 			CollectionReference posts = db.collection(COLLECTION_NAME);
 			
 			{	//write data
