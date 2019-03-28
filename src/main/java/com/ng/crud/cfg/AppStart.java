@@ -31,11 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.cloud.FirestoreClient;
+import com.ng.crud.util.Env;
 
 //
 @Component
 public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 {
+	public static final String FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST";
+	
 	public static void main(String[] args)
 	{
 		new AppStart().onApplicationEvent(null);
@@ -48,85 +51,53 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 		{
 			String projectId = "expoapp-1";
 			String url = "http://localhost:8080/";
-			System.setProperty("FIRESTORE_EMULATOR_HOST", url);
-			injectEnvironmentVariable("FIRESTORE_EMULATOR_HOST", url);
+			
+			Env.setEnvVar(FIRESTORE_EMULATOR_HOST, url);
 			
 			FileInputStream serviceAccount = new FileInputStream("src/main/resources/cred.json");
 			
-			FirebaseOptions options = new FirebaseOptions.Builder()
-			    //.setCredentials(credentials)
+			FirebaseOptions options = new FirebaseOptions.Builder()//.setCredentials(credentials)
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 			    .setProjectId(projectId)
 			    .setDatabaseUrl(url)
-			    //.setFirestoreOptions(FIRESTORE_OPTIONS)
 			    .build();
 			
 			FirebaseApp.initializeApp(options);
-	
 			Firestore db = FirestoreClient.getFirestore();
-			
 			CollectionReference posts = db.collection("posts");
 			
 			{	//write data
 				DocumentReference docRef = posts.document("doc-"+System.currentTimeMillis());
 				Map<String, Object> data = new HashMap<>();
 				data.put("first", "Ada");
-				//asynchronously write data
-				ApiFuture<WriteResult> result = docRef.set(data);
-				// result.get() blocks on response
-				System.err.println("Written!: " + result.get().getUpdateTime());
+				ApiFuture<WriteResult> result = docRef.set(data);					// asynchronously write data,	result.get() blocks on response
+				out("Written!: " + result.get().getUpdateTime()+" \t getenv("+FIRESTORE_EMULATOR_HOST+") = "+System.getenv(FIRESTORE_EMULATOR_HOST));
 			}
 			{	//read data
-				// asynchronously retrieve all users
-				ApiFuture<QuerySnapshot> query = db.collection("posts").get();
-				// ...
-				// query.get() blocks on response
-				QuerySnapshot querySnapshot = query.get();
+				ApiFuture<QuerySnapshot> query = db.collection("posts").get();		// asynchronously retrieve all users
+				QuerySnapshot querySnapshot = query.get();							// query.get() blocks on response
 				List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 				int i= 0;
-				for (QueryDocumentSnapshot document : documents) {
-				  System.out.println("doId: " + document.getId());
+				for (QueryDocumentSnapshot document : documents)
+				{
+					out("doId: " + document.getId());
 				  i++;
 				}
-				System.err.println("Read!: #docs:" + i);
+				out("Read!: #docs:" + i);
 			}
 			
-			System.err.println("AppStart: FINISH");
+			out("AppStart: FINISH");
 		}
 		catch(Exception e)
 		{
-			System.err.println("AppStart: Exception: "+e);
+			out("AppStart: Exception: "+e);			
 			e.printStackTrace();
 		}
 	}
-	private static Field getAccessibleField(Class<?> clazz, String fieldName)
-            throws NoSuchFieldException {
-
-        Field field = clazz.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field;
-    }
-	private static void injectIntoUnmodifiableMap(String key, String value, Object map)
-            throws ReflectiveOperationException {
-
-        Class unmodifiableMap = Class.forName("java.util.Collections$UnmodifiableMap");
-        Field field = getAccessibleField(unmodifiableMap, "m");
-        Object obj = field.get(map);
-        ((Map<String, String>) obj).put(key, value);
-    }
-	 private static void injectEnvironmentVariable(String key, String value)
-	            throws Exception {
-
-	        Class<?> processEnvironment = Class.forName("java.lang.ProcessEnvironment");
-
-	        Field unmodifiableMapField = getAccessibleField(processEnvironment, "theUnmodifiableEnvironment");
-	        Object unmodifiableMap = unmodifiableMapField.get(null);
-	        injectIntoUnmodifiableMap(key, value, unmodifiableMap);
-
-	        Field mapField = getAccessibleField(processEnvironment, "theEnvironment");
-	        Map<String, String> map = (Map<String, String>) mapField.get(null);
-	        map.put(key, value);
-	    }
+	protected void out(String s)
+	{
+		System.err.println(s);
+	}
 }
 
 /*{
