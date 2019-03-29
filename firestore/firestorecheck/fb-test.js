@@ -3,12 +3,13 @@ process.env['FIREBASE_FIRESTORE_EMULATOR_ADDRESS'] = 'http://localhost:8040/';
 
 const firebase = require('@firebase/testing');
 
+
 setTimeout(async function()
 {
   try
   {
     console.log("step-1");
-    const apps = firebase.initializeAdminApp({projectId: 'expoapp', uid:'alice'});
+    const apps = firebase.initializeAdminApp({projectId: 'expoapp-1', uid:'alice'});
     const app = firebase.apps()[0];
     const firestore = app.firestore();
     const posts = firestore.collection('posts');

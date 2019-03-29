@@ -55,7 +55,7 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 		try
 		{
 			String projectId = "expoapp-1";
-			String url = "localhost:8080";
+			String url = "localhost:8040";
 			
 			//GoogleCredentials.getApplicationDefault()//needs env var: GOOGLE_APPLICATION_CREDENTIALS
 			Env.setEnvVar(GOOGLE_APPLICATION_CREDENTIALS, (new File("."))+"/src/main/resources/cred-local.json");
@@ -68,7 +68,7 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 			InstantiatingGrpcChannelProvider igcp = b.build();
 			FirestoreOptions firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder().setHost(url).setChannelProvider(igcp).build();
 			
-			FirebaseOptions options = new FirebaseOptions.Builder()//.setCredentials(credentials)
+			FirebaseOptions options = new FirebaseOptions.Builder()
 				//.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.setCredentials(GoogleCredentials.getApplicationDefault())		//reads GOOGLE_APPLICATION_CREDENTIALS
 			    .setProjectId(projectId)
@@ -77,22 +77,22 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 			    .build();
 			
 			FirebaseApp.initializeApp(options);
-			
 			Firestore db = FirestoreClient.getFirestore();
-			
 			
 			CollectionReference posts = db.collection(COLLECTION_NAME);
 			
+			for(int i=0;i<3;i++)
 			{	//write data
-				DocumentReference docRef = posts.document("doc-"+System.currentTimeMillis());
+				DocumentReference docRef = posts.document("doc-"+i+"-"+System.currentTimeMillis());
 				Map<String, Object> data = new HashMap<>();
 				data.put("first", "Ada! "+System.currentTimeMillis());
 				ApiFuture<WriteResult> result = docRef.set(data);					// asynchronously write data,	result.get() blocks on response
-				out("Written!: " + result.get().getUpdateTime()+" \t getenv("+FIRESTORE_EMULATOR_HOST+") = "+System.getenv(FIRESTORE_EMULATOR_HOST));
+				out("Written!: " + result.get().getUpdateTime()+" \t url:"+url);
+				result.get();
 			}
 			{	//read data
 				ApiFuture<QuerySnapshot> query = db.collection(COLLECTION_NAME).get();		// asynchronously retrieve all users
-				QuerySnapshot querySnapshot = query.get();							// query.get() blocks on response
+				QuerySnapshot querySnapshot = query.get();									// query.get() blocks on response
 				List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 				int i= 0;
 				for (QueryDocumentSnapshot document : documents)
@@ -101,6 +101,7 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 				  i++;
 				}
 				out("Read!: #docs:" + i);
+				
 			}
 			
 			out("AppStart: FINISH");
