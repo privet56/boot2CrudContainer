@@ -278,6 +278,11 @@ quit()
 2. in Profile=test, do **not** set 'spring.data.mongodb.uri'
 3. result: when in unittest, the embedded mongo is used!
 
+## Firestore:
+* Local setup with docker: see [firestore/firestore.md](firestore/firestore.md)
+* Read-/Write operations with the firestore-admin NodeJS API: [firestore/firestorecheck/fb-test.js](firestore/firestorecheck/fb-test.js)
+* Read-/Write operations with the Java firestore-admin API [./src/main/java/com/ng/crud/cfg/AppStart.java](./src/main/java/com/ng/crud/cfg/AppStart.java)
+
 ## TODO:
 1. helm - local with liveness & readiness probe (hint: try to adjust the istio ingress/egress rules)
 2. functional/reactive java CRUD implementation

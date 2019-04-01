@@ -13,7 +13,7 @@ docker run --rm -p 8040:8040 -v ./firestore-data:/opt/data -it -e "FIRESTORE_PRO
 > gcloud beta emulators firestore start --host-port=0.0.0.0:8040
 
 # advanced: start everything in one line: (path: ${PWD}/, `pwd`/)
-docker run --rm -p 8040:8040 -it -e "FIRESTORE_PROJECT_ID=expoapp" -v `pwd`:/certs -v `pwd`/firestore-data:/opt/data --name my_gcloud my_google_sdk_docker:alpine /bin/bash -c "gcloud beta emulators firestore start --host-port=0.0.0.0:8040"
+docker run --rm -p 8040:8040 -it -v certs:/certs -v firestore-data:/opt/data -e "FIRESTORE_PROJECT_ID=expoapp" --name my_gcloud my_google_sdk_docker:alpine /bin/bash -c "gcloud beta emulators firestore start --host-port=0.0.0.0:8040"
 ```
 ```sh
 # working inside of the container (write in another console):
