@@ -48,6 +48,7 @@ gcloud auth application-default login           # Credentials saved to file: [/r
 <img src="../_res/gcloud.keys.create.png" width="650px">
 
 ### GCLOUD - Java API usage:
+Implementation: [../src/main/java/com/ng/crud/cfg/AppStart.java](../src/main/java/com/ng/crud/cfg/AppStart.java)
 <img src="../_res/gcloud.java.api.2.png" width="650px">
 
 ## Setup Steps
