@@ -58,7 +58,8 @@ public class AppStart implements ApplicationListener<ApplicationReadyEvent>
 			String url = "localhost:8040";
 			
 			//GoogleCredentials.getApplicationDefault()//needs env var: GOOGLE_APPLICATION_CREDENTIALS
-			Env.setEnvVar(GOOGLE_APPLICATION_CREDENTIALS, (new File("."))+"/src/main/resources/cred-local.json");
+			String path = (new File(".")).getAbsolutePath()+"/src/main/resources/cred-local.json";
+			Env.setEnvVar(GOOGLE_APPLICATION_CREDENTIALS, path);
 			//Env.setEnvVar(FIRESTORE_EMULATOR_HOST				, url);
 			//Env.setEnvVar(FIREBASE_FIRESTORE_EMULATOR_ADDRESS	, url);
 			
